@@ -1,8 +1,8 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-import guifunctionality as gf
-import gui
-import variables
+import UI.guifunctionality as gf
+import UI.gui as gui
+import UI.variables as variables
 import cfgreader
 
 
