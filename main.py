@@ -28,6 +28,10 @@ def buttonsConnect():
     MWindow.loadDatabasesButton.clicked.connect(
             lambda: gf.loadDatabasesButtonClicked(DatabasesWindow, DbWindow)
             )
+    MWindow.startButton.clicked.connect(
+            lambda: gf.startButtonClicked(MainWindow,MWindow)
+            )
+    
     VarWindow.buttonBox.clicked.connect(
             lambda: gf.variablesWindowSaveButtonClicked(VarWindow)
             )
@@ -47,6 +51,8 @@ if __name__ == "__main__":
     DatabasesWindow = QtWidgets.QMainWindow()
     DbWindow = databases.Ui_DatabasesWindow()
     DbWindow.setupUi(DatabasesWindow)
+    
+    
     
     # Adding the plotter to the GUI
     plotter = QtWidgets.QVBoxLayout(MWindow.widget)

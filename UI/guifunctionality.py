@@ -41,7 +41,8 @@ class DynamicMplCanvas(MplCanvas):
         timer.start(1000)
 
     def compute_initial_figure(self):
-        self.axes.plot([0, 1, 2, 3], [1, 2, 0, 4], 'r')
+        self.axes.plot([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 
+                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], 'r')
 
     def update_figure(self):
         # Build a list of 4 random integers between 0 and 10 (both inclusive)
@@ -137,4 +138,7 @@ def variablesWindowSaveButtonClicked(WindowUI):
 
 def loadDatabasesButtonClicked(WindowWidget,WindowUI):
     showWindow(WindowWidget)
+
+def startButtonClicked(WindowWidget, WindowUI):
+    WindowUI.progressBar.setValue(WindowUI.progressBar.value() + 1)
         

@@ -44,7 +44,7 @@ class Ui_MainWindow(object):
         self.horizontalLayoutProgress = QtWidgets.QHBoxLayout()
         self.horizontalLayoutProgress.setObjectName("horizontalLayoutProgress")
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
-        self.progressBar.setProperty("value", 24)
+        self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
         self.horizontalLayoutProgress.addWidget(self.progressBar)
         self.startButton = QtWidgets.QPushButton(self.centralwidget)
