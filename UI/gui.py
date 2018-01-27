@@ -1,63 +1,43 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'GUI.ui'
+# Form implementation generated from reading ui file 'UI/GUI.ui'
 #
-# Created by: PyQt5 UI code generator 5.5.1
+# Created by: PyQt5 UI code generator 5.6
 #
 # WARNING! All changes made in this file will be lost!
 
-
-# Code within sections was not generated from qtdesigner, it will have to be added
-# back in if a new file is generated
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_MainWindow(object):   
+class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        
         self.mainVerticalLayout = QtWidgets.QVBoxLayout()
         self.mainVerticalLayout.setObjectName("mainVerticalLayout")
-        
         self.widget = QtWidgets.QWidget(self.centralwidget)
         self.widget.setMinimumSize(QtCore.QSize(450, 300))
-        self.widget.setObjectName("widget")        
+        self.widget.setObjectName("widget")
         self.mainVerticalLayout.addWidget(self.widget)
-        
         self.verticalLayoutVariablesConsole = QtWidgets.QVBoxLayout()
         self.verticalLayoutVariablesConsole.setObjectName("verticalLayoutVariablesConsole")
-        
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
         self.textBrowser.setMaximumSize(QtCore.QSize(16777215, 1677215))
         self.textBrowser.setObjectName("textBrowser")
-        
         self.verticalLayoutVariablesConsole.addWidget(self.textBrowser)
-        
         self.horizontalLayoutSettings = QtWidgets.QHBoxLayout()
         self.horizontalLayoutSettings.setObjectName("horizontalLayoutSettings")
-        
         self.loadDatabasesButton = QtWidgets.QPushButton(self.centralwidget)
         self.loadDatabasesButton.setObjectName("loadDatabasesButton")
         self.horizontalLayoutSettings.addWidget(self.loadDatabasesButton)
-
-        
         self.setVariablesButton = QtWidgets.QPushButton(self.centralwidget)
         self.setVariablesButton.setObjectName("setVariablesButton")
         self.horizontalLayoutSettings.addWidget(self.setVariablesButton)
-        
-        
         self.verticalLayoutVariablesConsole.addLayout(self.horizontalLayoutSettings)
         self.mainVerticalLayout.addLayout(self.verticalLayoutVariablesConsole)
-        
         self.horizontalLayoutGraphics = QtWidgets.QHBoxLayout()
         self.horizontalLayoutGraphics.setObjectName("horizontalLayoutGraphics")
         self.mainVerticalLayout.addLayout(self.horizontalLayoutGraphics)
@@ -67,11 +47,8 @@ class Ui_MainWindow(object):
         self.progressBar.setProperty("value", 24)
         self.progressBar.setObjectName("progressBar")
         self.horizontalLayoutProgress.addWidget(self.progressBar)
-        
         self.startButton = QtWidgets.QPushButton(self.centralwidget)
         self.startButton.setObjectName("startButton")
-        
-        
         self.horizontalLayoutProgress.addWidget(self.startButton)
         self.mainVerticalLayout.addLayout(self.horizontalLayoutProgress)
         self.verticalLayout_3.addLayout(self.mainVerticalLayout)
@@ -101,15 +78,13 @@ class Ui_MainWindow(object):
         self.actionLoad_Databases.setObjectName("actionLoad_Databases")
         self.actionSet_Variables = QtWidgets.QAction(MainWindow)
         self.actionSet_Variables.setObjectName("actionSet_Variables")
-        self.menuFile.addAction(self.actionLoad_Settings)
-        self.menuFile.addAction(self.actionSave_Settings)
         self.menuFile.addAction(self.actionLoad_Databases)
         self.menuFile.addAction(self.actionSet_Variables)
         self.menuAbout.addAction(self.actionGitHub)
         self.menuAbout.addAction(self.actionTeam_Site)
-        self.menuAbout.addAction(self.actionAbout)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuAbout.menuAction())
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -128,3 +103,4 @@ class Ui_MainWindow(object):
         self.actionSave_Settings.setText(_translate("MainWindow", "Save Settings"))
         self.actionLoad_Databases.setText(_translate("MainWindow", "Load Databases"))
         self.actionSet_Variables.setText(_translate("MainWindow", "Set Variables"))
+

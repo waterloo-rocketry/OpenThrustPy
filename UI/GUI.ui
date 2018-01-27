@@ -97,8 +97,6 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionLoad_Settings"/>
-    <addaction name="actionSave_Settings"/>
     <addaction name="actionLoad_Databases"/>
     <addaction name="actionSet_Variables"/>
    </widget>
@@ -108,7 +106,6 @@
     </property>
     <addaction name="actionGitHub"/>
     <addaction name="actionTeam_Site"/>
-    <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuAbout"/>

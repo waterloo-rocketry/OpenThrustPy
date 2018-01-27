@@ -1,12 +1,15 @@
 from __future__ import unicode_literals
 import random
 import matplotlib
+import webbrowser
 # Make sure that we are using QT5
 matplotlib.use('Qt5Agg')
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-import cfgreader
 from PyQt5 import QtCore, QtWidgets
+
+
+import cfgreader
 
 class MplCanvas(FigureCanvas):
     """Ultimately, this is a QWidget (as well as a FigureCanvasAgg, etc.)."""
@@ -51,7 +54,7 @@ class DynamicMplCanvas(MplCanvas):
 def showWindow(windowWidget):
     windowWidget.show()
     
-def dataGrab(window):
+def settingsGrab(window):
     # Grabs the settings data in the variables window and returns it as cfg
     cfg = {
        'ox_tank_vol_L':     str(window.lineEditOxTank.text()), 
@@ -69,7 +72,7 @@ def dataGrab(window):
        }
     return cfg
 
-def dataSet(window, cfg):
+def settingsSet(window, cfg):
     # Sets the settings data in the variables window based off of cfg
     window.lineEditOxTank.setText          (cfg['ox_tank_vol_L'])
     window.lineEditThroatA.setText         (cfg['noz_thr_area_cm2'])
@@ -84,8 +87,54 @@ def dataSet(window, cfg):
     window.checkBoxCalcCf.setCheckState    (bool(cfg['calc_thrust_coef']))
     window.lineEditC12.setText             (cfg['C12'])
     
-def dataSave(Parser, settingsPath, window):
+def settingsSave(Parser, settingsPath, window):
     # Saves settings data from GUI to file
-    cfgreader.writeSettingsToFile(Parser, settingsPath, dataGrab(window))
+    cfgreader.writeSettingsToFile(Parser, settingsPath, settingsGrab(window))
+
+def openFileNameDialog(window):    
+    options = QtWidgets.QFileDialog.Options()
+    options |= QtWidgets.QFileDialog.DontUseNativeDialog
+    fileName, _ = QtWidgets.QFileDialog.getOpenFileName(window,"File Picker", "","All Files (*);;Python Files (*.py)", options=options)
+    if fileName:
+        print(fileName)
+
+def saveFileDialog(window):    
+    options = QtWidgets.QFileDialog.Options()
+    options |= QtWidgets.QFileDialog.DontUseNativeDialog
+    fileName, _ = QtWidgets.QFileDialog.getSaveFileName(window,"File Picker","","All Files (*);;Text Files (*.txt)", options=options)
+    if fileName:
+        print(fileName)
+
+def grabSetSettings(VariablesWindowUI):
+    Parser = cfgreader.configparser.ConfigParser()
+    try: 
+        Parser.read(cfgreader.SETTINGS_PATH)
+        settingsSet(VariablesWindowUI, cfgreader.readSettingsFromFile(Parser,cfgreader.SETTINGS_PATH))
+    except:
+        print("Settings values inputted wrong, using default settings...")
+        cfgreader.createNewSettingsFile(cfgreader.SETTINGS_PATH)
+        Parser.read(cfgreader.SETTINGS_PATH)
+        settingsSet(VariablesWindowUI, cfgreader.readSettingsFromFile(Parser, cfgreader.SETTINGS_PATH))
+
+def openGithub():
+    webbrowser.open("https://github.com/waterloo-rocketry/OpenThrustPy")
+    
+def openTeamSite():
+    webbrowser.open("http://waterloorocketry.com")
+
+#########################
+# Button functionalities#
+#########################
 
 
+def setVariablesButtonClicked(WindowWidget, WindowUI):
+    showWindow(WindowWidget)
+    grabSetSettings(WindowUI)
+    
+def variablesWindowSaveButtonClicked(WindowUI):
+    Parser = cfgreader.configparser.ConfigParser()
+    settingsSave(Parser, cfgreader.SETTINGS_PATH, WindowUI)
+
+def loadDatabasesButtonClicked(WindowWidget,WindowUI):
+    showWindow(WindowWidget)
+        

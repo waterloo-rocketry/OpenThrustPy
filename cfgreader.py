@@ -1,9 +1,11 @@
 import configparser
 
+SETTINGS_PATH = "./settings.cfg"
 
-def writeSettingsToFile(ParserObject, SettingsPath, cfg):
+def writeSettingsToFile(ParserObject, settingsPath, cfg):
     # Takes a dictionary of values and writes it to the settings file
     config = ParserObject
+    readSettingsFromFile(config, settingsPath)
     
     config.set(
             "Rocket Dimensions",     
@@ -66,14 +68,15 @@ def writeSettingsToFile(ParserObject, SettingsPath, cfg):
             cfg["C12"]
             )
     
-    with open(SettingsPath, 'w') as configfile:
+    with open(SETTINGS_PATH, 'w') as configfile:
         config.write(configfile)
     
     return True
 
-def readSettingsFromFile(ParserObject):
+def readSettingsFromFile(ParserObject, settingsPath):
     # Takes the settings file and generates a dictionary
     config = ParserObject
+    config.read(settingsPath)
     try:
         rDim = config["Rocket Dimensions"]
         rProp = config["Rocket Properties"]
@@ -94,9 +97,9 @@ def readSettingsFromFile(ParserObject):
         return cfg
     except:
         print("Improperly formatted settings file, creating new one...")
-        createNewSettingsFile("./settings.cfg")
-        config.read("./settings.cfg")
-        return readSettingsFromFile(config)
+        createNewSettingsFile(settingsPath)
+        config.read(settingsPath)
+        return readSettingsFromFile(config, settingsPath)
     
 
 def createNewSettingsFile(settingsPath):
@@ -121,36 +124,3 @@ def createNewSettingsFile(settingsPath):
 
     with open(settingsPath, 'w') as configfile:
         config.write(configfile)
-
-"""
-# Sample code to create parser, read file, write to file, 
-#     and generate a default settings file.
-settingsPath = "./settings.cfg"
-Parser = configparser.ConfigParser()
-Parser.read(settingsPath)        
-a = readSettingsFromFile(Parser)
-print(a)
-print("\n\nChanging values")
-cfg = {
-       'ox_tank_vol_L': '18.4', 
-       'noz_thr_area_cm2': '6.98123', 
-       'noz_ext_area_cm2': '40.1231', 
-       'ox_fuel_ratio': '6.5', 
-       'ramp_up_s': '6', 
-       'ramp_down_s': '9', 
-       'time_step_s': '0.01', 
-       'conv_weight': '0.1', 
-       'flow_model': '2', 
-       'integ_type': '2', 
-       'calc_thrust_coef': 'True', 
-       'C12': '4.51'}
-writeSettingsToFile(Parser, settingsPath, cfg)
-Parser.read(settingsPath)
-b = readSettingsFromFile(Parser)
-print(b)
-print("\n\nGenerating default settings file")
-createNewSettingsFile(settingsPath)
-Parser.read(settingsPath)
-c = readSettingsFromFile(Parser)
-print(c)
-"""
