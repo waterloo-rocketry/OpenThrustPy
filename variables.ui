@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>VariablesWindow</class>
+ <widget class="QMainWindow" name="VariablesWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>340</width>
+    <height>442</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Variables</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>logo.png</normaloff>logo.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QFormLayout" name="formLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="labelOxTank">
+      <property name="text">
+       <string>Oxidizer Tank Volume (L)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineEditOxTank"/>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="lineEditOxFuel"/>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLineEdit" name="lineEditRampUp"/>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLineEdit" name="lineEditRampDown"/>
+    </item>
+    <item row="8" column="1">
+     <widget class="QSpinBox" name="spinBoxFlowModel"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="labelThroatA">
+      <property name="text">
+       <string>Nozzle Throat Area (cm²)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="12" column="1">
+     <widget class="QDialogButtonBox" name="buttonBox">
+      <property name="standardButtons">
+       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+      </property>
+      <property name="centerButtons">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEditThroatA"/>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="labelOxfuel">
+      <property name="text">
+       <string>Average O/F Ratio</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="labelExitA">
+      <property name="text">
+       <string>Nozzle Exit Area (cm²)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="labelRampUp">
+      <property name="text">
+       <string>Ramp Up Time (s)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="labelRampDown">
+      <property name="text">
+       <string>Ramp Down Time (s)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="labelTimeStep">
+      <property name="text">
+       <string>Time Step (s)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="labelConvWeight">
+      <property name="text">
+       <string>Convergence Weighting</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0">
+     <widget class="QLabel" name="labelFlowModel">
+      <property name="text">
+       <string>Flow Model</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="0">
+     <widget class="QLabel" name="labelIntType">
+      <property name="text">
+       <string>Integration Type</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="1">
+     <widget class="QCheckBox" name="checkBoxCalcCf">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="0">
+     <widget class="QLabel" name="labelCalcCf">
+      <property name="text">
+       <string>Calculate Cf</string>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="0">
+     <widget class="QLabel" name="labelC12">
+      <property name="text">
+       <string>C12</string>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="1">
+     <widget class="QLineEdit" name="lineEditC12">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="1">
+     <widget class="QSpinBox" name="spinBoxIntType"/>
+    </item>
+    <item row="6" column="1">
+     <widget class="QLineEdit" name="lineEditTimeStep"/>
+    </item>
+    <item row="7" column="1">
+     <widget class="QLineEdit" name="lineEditConvWeight"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEditExitA"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>340</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>lineEditOxTank</tabstop>
+  <tabstop>lineEditThroatA</tabstop>
+  <tabstop>lineEditExitA</tabstop>
+  <tabstop>lineEditOxFuel</tabstop>
+  <tabstop>lineEditRampUp</tabstop>
+  <tabstop>lineEditRampDown</tabstop>
+  <tabstop>lineEditTimeStep</tabstop>
+  <tabstop>lineEditConvWeight</tabstop>
+  <tabstop>spinBoxFlowModel</tabstop>
+  <tabstop>spinBoxIntType</tabstop>
+  <tabstop>checkBoxCalcCf</tabstop>
+  <tabstop>lineEditC12</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>checkBoxCalcCf</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineEditC12</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>246</x>
+     <y>326</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>246</x>
+     <y>350</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>clicked(QAbstractButton*)</signal>
+   <receiver>VariablesWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>246</x>
+     <y>380</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>168</x>
+     <y>210</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
