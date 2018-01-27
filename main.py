@@ -8,6 +8,7 @@ import UI.databases as databases
 
 
 
+
 def buttonsConnect():
     MWindow.actionSet_Variables.triggered.connect(
             lambda: gf.setVariablesButtonClicked(VariablesWindow, VarWindow)
