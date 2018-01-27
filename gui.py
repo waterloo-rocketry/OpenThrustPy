@@ -10,99 +10,9 @@
 # Code within sections was not generated from qtdesigner, it will have to be added
 # back in if a new file is generated
 
-#Start of section##############################################################
-from __future__ import unicode_literals
-import sys
-import os
-import random
-import matplotlib
-# Make sure that we are using QT5
-matplotlib.use('Qt5Agg')
-from numpy import arange, sin, pi
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
-#End of section################################################################
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-#Start of section##############################################################
-class MplCanvas(FigureCanvas):
-    """Ultimately, this is a QWidget (as well as a FigureCanvasAgg, etc.)."""
-
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)
-
-        self.compute_initial_figure()
-
-        FigureCanvas.__init__(self, fig)
-        self.setParent(parent)
-
-        FigureCanvas.setSizePolicy(self,
-                                   QtWidgets.QSizePolicy.Expanding,
-                                   QtWidgets.QSizePolicy.Expanding)
-        FigureCanvas.updateGeometry(self)
-
-    def compute_initial_figure(self):
-        pass
-
-class DynamicMplCanvas(MplCanvas):
-    """A canvas that updates itself every second with a new plot."""
-
-    def __init__(self, *args, **kwargs):
-        MplCanvas.__init__(self, *args, **kwargs)
-        timer = QtCore.QTimer(self)
-        timer.timeout.connect(self.update_figure)
-        timer.start(1000)
-
-    def compute_initial_figure(self):
-        self.axes.plot([0, 1, 2, 3], [1, 2, 0, 4], 'r')
-
-    def update_figure(self):
-        # Build a list of 4 random integers between 0 and 10 (both inclusive)
-        l = [random.randint(0, 10) for i in range(50)]
-        self.axes.cla()
-        self.axes.plot(range(50), l, 'r')
-        self.draw()
-
-#End of section################################################################
-
-class Ui_MainWindow(object):
-    #Start of Section##########################################################
-    def startButtonClicked(self):
-        print("Starting simulation....")
-    
-    def setVariablesButtonClicked(self):
-        print("b")
-        
-    def loadDatabasesButtonClicked(self):
-        print("c")
-    
-    def setProgressBarValue(self):
-        return
-    
-    def fileMenuSaveSettingsClicked(self):
-        return
-    
-    def fileMenuLoadSettingsClicked(self):
-        return
-    
-    def fileMenuLoadDatabasesClicked(self):
-        return
-    
-    def fileMenuSetVariablesClicked(self):
-        return
-    
-    def aboutMenuGithubClicked(self):
-        return
-    
-    def aboutMenuTeamSiteClicked(self):
-        return
-    
-    def aboutMenuAboutClicked(self):
-        return
-    #End of Section############################################################
-    
+class Ui_MainWindow(object):   
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
@@ -118,18 +28,9 @@ class Ui_MainWindow(object):
         self.mainVerticalLayout = QtWidgets.QVBoxLayout()
         self.mainVerticalLayout.setObjectName("mainVerticalLayout")
         
-        # Plotter Widget
         self.widget = QtWidgets.QWidget(self.centralwidget)
         self.widget.setMinimumSize(QtCore.QSize(450, 300))
-        self.widget.setObjectName("widget")
-
-        #Start of Section######################################################
-        # Plotter
-        plotter = QtWidgets.QVBoxLayout(self.widget)
-        dc = DynamicMplCanvas(self.widget, width=5, height=4, dpi=100)
-        plotter.addWidget(dc)
-        #End of section########################################################
-        
+        self.widget.setObjectName("widget")        
         self.mainVerticalLayout.addWidget(self.widget)
         
         self.verticalLayoutVariablesConsole = QtWidgets.QVBoxLayout()
@@ -209,21 +110,6 @@ class Ui_MainWindow(object):
         self.menuAbout.addAction(self.actionAbout)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuAbout.menuAction())
-        
-        #Start of section######################################################
-        self.loadDatabasesButton.clicked.connect(
-                self.loadDatabasesButtonClicked
-                )
-        self.startButton.clicked.connect(
-                self.startButtonClicked
-                )
-        #self.setVariablesButton.clicked.connect(
-        #        self.setVariablesButtonClicked
-        #        )
-        #End of section########################################################
-        
-        
-        
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -242,14 +128,3 @@ class Ui_MainWindow(object):
         self.actionSave_Settings.setText(_translate("MainWindow", "Save Settings"))
         self.actionLoad_Databases.setText(_translate("MainWindow", "Load Databases"))
         self.actionSet_Variables.setText(_translate("MainWindow", "Set Variables"))
-
-
-if __name__ == "__main__":
-
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
-
