@@ -6,196 +6,254 @@ L refers to liquid phase, V refers to vapor phase
 o refers to initial
 """
 import scipy.optimize as optimize
+import cfgreader
 from math import isnan
 import numpy as np
 import matplotlib.pyplot as plt
 from datareader import grabProps, calcQuality
 
-# =============================================================================
-# Constants
-# =============================================================================
-Cd = 0.8
-OF = 2.1
-# =============================================================================
-# Inputs
-# =============================================================================
-V = 6.9*(1/1000)                                        # m^3
-M = 4.6                                                 # kg
-T1 = 274.25                                             # K
-d_inj = 0.002
-Ac = 9*3.14*(d_inj/2)**2                                # m^2
-tStop = 15                                              # s
-dt = 0.05                                               # s
-
-# =============================================================================
-# Set State
-# =============================================================================
-t = 0
-rho1 = M/V                                              # kg/L
-Props1 = grabProps(T1, rho1) 
-P1 = Props1["P"]
-rhoL = Props1["rho_L"]
-rhoV = Props1["rho_V"]
-X1 = calcQuality(rho1, rhoV, rhoL)
-h1 = Props1["h"]
-H1 = h1*M;
-mdot_inc = 0
-mdot_HEM = 0
-mdot = 0
-st = Props1["state"]
-P2 = 14.7
-
-
-iterations = 0
-time = []
-mass = []
-density = []
-massFlow = []
-Temperature = []
-HEM = []
-inc = []
-Pc = 0
-thrust = 0
-chamberP = []
-thrustA = []
-while t < tStop:
-    iterations += 1
-
-    time.append(t)
-    mass.append(M)
-    density.append(rho1)
-    massFlow.append(mdot)
-    Temperature.append(T1)
-    HEM.append(mdot_HEM)
-    inc.append(mdot_inc)
-    chamberP.append(Pc)
-    thrustA.append(thrust)
-    if M < 0: break
-    print(str(t) + " : " + str(M))
-    # Match fluid properties
-    guess = [300,300]
-    pFunc = lambda v: [grabProps(v[0],v[1])["P"] - P1,
-                       grabProps(v[0],v[1])["X"] - X1]
-    v1 = optimize.least_squares(pFunc, guess, bounds=(0,np.inf))
-    T1      = v1.x[0]
-    rho1    = v1.x[1]
-    Props1  = grabProps(T1, rho1)
-    Pv1     = Props1["P"]
-    rhoL1   = Props1["rho_L"]
-    h1      = Props1["h"]
-    H1      = h1*M
-    s1      = Props1["s"]
+class model():
     
-    # Isentropic assumption
-    pFunc = lambda v: [grabProps(v[0],v[1])["P"] - P1,
-                       grabProps(v[0],v[1])["s"] - s1]
-    #Adiabatic assumption
-    #pFunc = lambda v: [grabProps(v[0],v[1])["P"] - P1,
-    #                   grabProps(v[0],v[1])["h"] - h1]
-    v2 = optimize.least_squares(pFunc, guess, bounds=(0,np.inf))
-    T2      = v2.x[0]
-    rho2    = v2.x[0]
-    Props2  = grabProps(T2,rho2)
-    Pv2     = Props2["P"]
-    h2      = Props2["h"]
-# =============================================================================
-#     print(h1)
-#     print(T2)
-#     print(h2)
-#     break
-# =============================================================================
     
-    # Mass Flow calculations
-    k = ((P1-P2)/(Pv1-P2))**0.5
-    W = (1/(k+1))
-    mdot_inc = Cd*Ac*((2*rho1*((P1-P2)*6894.76))**0.5)
-    mdot_HEM = Cd*rho2*Ac*((2*((h1-h2)))**0.5)
-    if isnan(mdot_HEM): mdot_HEM = 0
-    mdot = Cd*((1-W)*mdot_inc+W*mdot_HEM)
-# =============================================================================
-#     print("inc: " + str(mdot_inc))
-#     print("HEM: " + str(mdot_HEM))
-#     print("mdt: " + str(mdot))
-# =============================================================================
-# =============================================================================
-#     Temporary
-# =============================================================================
-    mdotNozzle = mdot*((1+OF)/OF)
-    k = 1.1123
-    Tc = 2180
-    R = (8.314/22.9529)*1000
-    nozThroatArea = 0.000382646
-    a = (k*R*Tc)**0.5
-    b = (k+1)/(k-1)
-    c = (2/(k+1))
-    Pc = (mdotNozzle*a)/(k*nozThroatArea*((c**b)**0.5))
-    Cf = 1.457
-    thrust = Pc*Cf*nozThroatArea
-    Pc = Pc/6894.76
-
-# =============================================================================
-#     End
-# =============================================================================
-    # Update properties
-    M -= mdot*dt
-    Hdot = h1*mdot
-    H1 -= Hdot*dt
-    rho1 = M/V
+    def __init__(self, mass, temperature, maxT = 60, minM = 0):
+        """
+            Input in kg and K
+        """
+        self.grabSettings("./settings.cfg")
+        
+        self.iterations = 0
+        self.t = 0
+        self.maxT = maxT
+        self.minM = minM
+        self.M = mass
+        self.T1 = temperature
+        self.rho1 = self.M/self.V
+        self.initialState()
+        
+        self.Pc = 0
+        self.thrust = 0
+        self.tArray, self.MArray, self.T1Array = [], [], []
+        self.mdotArray, self.thrustArray = [], []
+        self.rho1Array, self.PcArray = [], []
+        self.Cd=0.8
+        
+        self.updatePlot()
+        #self.showPlots()
     
-    h1 = H1/M
+    def initialState(self):
+        
+        Props1 = grabProps(self.T1, self.rho1) 
+        self.P1 = Props1["P"]
+        self.rhoL = Props1["rho_L"]
+        self.rhoV = Props1["rho_V"]
+        self.X1 = calcQuality(self.rho1, self.rhoV, self.rhoL)
+        self.h1 = Props1["h"]
+        self.H1 = self.h1*self.M;
+        self.mdot_inc = 0
+        self.mdot_HEM = 0
+        self.mdot = 0
+        self.st = Props1["state"]
+        self.P2 = 14.7
+        self.st1 = 1
+        self.PropertiesState = [
+                self.t, 
+                self.M, 
+                self.rho1, 
+                self.T1, 
+                self.P1, 
+                self.X1, 
+                self.h1, 
+                self.H1, 
+                self.mdot, 
+                self.st1
+                ]
+        self.FlowRateState = [
+                self.mdot_inc, 
+                self.mdot_HEM
+                ]
+        
+    def grabSettings(self, settingsPath):
+        
+        Parser = cfgreader.configparser.ConfigParser()
+        cfg = cfgreader.readSettingsFromFile(Parser,settingsPath)
+        self.OF = float(cfg["ox_fuel_ratio"])
+        self.V = float(cfg["ox_tank_vol_L"])*(1/1000)              # m^3
+        self.dt = float(cfg["time_step_s"])
+        
+        d_inj = 0.002
+        self.Ac = 9*3.14*(d_inj/2)**2                       # m^2    
+        return
     
-    # Calculate new temperature
-    pFunc = lambda T_unknown: grabProps(T_unknown, rho1)["h"] -h1
-    Temp1 = optimize.least_squares(pFunc, 300 , bounds=(0,np.inf))
-    T1 = Temp1.x[0]
-    Props1 = grabProps(T1, rho1)
-    P1 = Props1["P"]
-    X1 = Props1["X"]
-    st1 = Props1["state"]
+    def updatePlot(self):
+        
+        self.tArray.append(self.t)
+        self.MArray.append(self.M)
+        self.T1Array.append(self.T1)
+        self.rho1Array.append(self.rho1)
+        self.mdotArray.append(self.mdot)
+        self.PcArray.append(self.Pc)
+        self.thrustArray.append(self.thrust)
+        time = self.tArray
+        mass = self.MArray
+        Temperature = self.T1Array
+        density = self.rho1Array
+        massFlow = self.mdotArray
+        chamberP = self.PcArray
+        thrust = self.thrustArray
+        
+        plt.figure(1)
+        plt.subplot(221)
+        plt.title("Mass")
+        plt.plot(time, mass)
+        
+        plt.subplot(222)
+        plt.title("Temperature")
+        plt.plot(time, Temperature)
+        
+        plt.subplot(223)
+        plt.title("Density")
+        plt.plot(time, density)
+        
+        plt.subplot(224)
+        plt.title("Mass Flow")
+        plt.plot(time, massFlow)
+        
+        plt.figure(2)
+        plt.subplot(121)
+        plt.title("Chamber Pressure")
+        plt.plot(time,chamberP)
+        
+        plt.subplot(122)
+        plt.title("Thrust")
+        plt.plot(time,thrust)
+        
+        
+        #fig1.canvas.draw()
+        #fig2.canvas.draw()
+        
+        return
     
-    t += dt
+    # =========================================================================
+    # Inputs
+    # =========================================================================
     
-    PropertiesState = [t, M, rho1, T1, P1, X1, h1, H1, mdot, st1];
-    FlowRateState = [mdot_inc, mdot_HEM];
-
-plt.figure(1)
-plt.subplot(221)
-plt.title("Mass")
-plt.plot(time, mass)
-
-plt.subplot(222)
-plt.title("Temperature")
-plt.plot(time, Temperature)
-
-plt.subplot(223)
-plt.title("Density")
-plt.plot(time, density)
-
-plt.subplot(224)
-plt.title("Mass Flow")
-plt.plot(time, massFlow)
-
-plt.figure(2)
-plt.subplot(131)
-plt.title("HEM")
-plt.plot(time, HEM)
-
-plt.subplot(132)
-plt.title("Inc")
-plt.plot(time, inc)
-
-plt.subplot(133)
-plt.title("Mass Flow")
-plt.plot(time, massFlow)
-
-plt.figure(3)
-plt.subplot(121)
-plt.title("Chamber Pressure")
-plt.plot(time,chamberP)
-
-plt.subplot(122)
-plt.title("Thrust")
-plt.plot(time,thrustA)
-
-
-plt.show()
+    
+    def timeStep(self):
+        self.iterations += 1
+        
+        if self.M < self.minM: 
+            print("Minimum mass reached")
+            return False
+        if self.t > self.maxT:
+            print("Maximum time reached")
+            return False
+        # Match fluid properties
+        guess = [300,300]
+        pFunc = lambda v: [grabProps(v[0],v[1])["P"] - self.P1,
+                           grabProps(v[0],v[1])["X"] - self.X1]
+        v1 = optimize.least_squares(pFunc, guess, bounds=(0,np.inf))
+        self.T1      = v1.x[0]
+        self.rho1    = v1.x[1]
+        Props1       = grabProps(self.T1, self.rho1)
+        self.Pv1     = Props1["P"]
+        self.rhoL1   = Props1["rho_L"]
+        self.h1      = Props1["h"]
+        self.H1      = self.h1*self.M
+        self.s1      = Props1["s"]
+        
+        # Isentropic assumption
+        pFunc = lambda v: [grabProps(v[0],v[1])["P"] - self.P1,
+                           grabProps(v[0],v[1])["s"] - self.s1]
+        #Adiabatic assumption
+        #pFunc = lambda v: [grabProps(v[0],v[1])["P"] - P1,
+        #                   grabProps(v[0],v[1])["h"] - h1]
+        v2 = optimize.least_squares(pFunc, guess, bounds=(0,np.inf))
+        self.T2      = v2.x[0]
+        self.rho2    = v2.x[0]
+        Props2  = grabProps(self.T2,self.rho2)
+        self.Pv2     = Props2["P"]
+        self.h2      = Props2["h"]
+        
+        # Mass Flow calculations
+        k = ((self.P1-self.P2)/(self.Pv1-self.P2))**0.5
+        W = (1/(k+1))
+        self.mdot_inc = self.Cd*self.Ac*(
+                (2*self.rho1*((self.P1-self.P2)*6894.76))**0.5
+                )
+        self.mdot_HEM = self.Cd*self.rho2*self.Ac*((2*((self.h1-self.h2)))**0.5)
+        if isnan(self.mdot_HEM): self.mdot_HEM = 0
+        self.mdot = self.Cd*((1-W)*self.mdot_inc+W*self.mdot_HEM)
+    # =============================================================================
+    #     Temporary
+    # =============================================================================
+        mdotNozzle = self.mdot*((1+self.OF)/self.OF)
+        k = 1.1123
+        Tc = 2180
+        R = (8.314/22.9529)*1000
+        nozThroatArea = 0.000382646
+        a = (k*R*Tc)**0.5
+        b = (k+1)/(k-1)
+        c = (2/(k+1))
+        self.Pc = (mdotNozzle*a)/(k*nozThroatArea*((c**b)**0.5))
+        Cf = 1.457
+        self.thrust = self.Pc*Cf*nozThroatArea
+        self.Pc = self.Pc/6894.76
+    
+    # =============================================================================
+    #     End
+    # =============================================================================
+        # Update properties
+        self.M -= self.mdot*self.dt
+        self.Hdot = self.h1*self.mdot
+        self.H1 -= self.Hdot*self.dt
+        self.rho1 = self.M/self.V
+        
+        self.h1 = self.H1/self.M
+        
+        # Calculate new temperature
+        pFunc = lambda T_unknown: grabProps(T_unknown, self.rho1)["h"] -self.h1
+        Temp1 = optimize.least_squares(pFunc, 300 , bounds=(0,np.inf))
+        self.T1 = Temp1.x[0]
+        Props1 = grabProps(self.T1, self.rho1)
+        self.P1 = Props1["P"]
+        self.X1 = Props1["X"]
+        self.st1 = Props1["state"]
+        
+        self.t += self.dt
+        
+        self.PropertiesState = [
+                self.t, 
+                self.M, 
+                self.rho1, 
+                self.T1, 
+                self.P1, 
+                self.X1, 
+                self.h1, 
+                self.H1, 
+                self.mdot, 
+                self.st1
+                ]
+        self.FlowRateState = [
+                self.mdot_inc, 
+                self.mdot_HEM
+                ]
+        return True
+    
+    
+    def showPlots(self):
+        plt.show()
+        
+    def runModel(self):
+        a = True
+        #self.showPlots()
+        while a: 
+            a = self.timeStep()
+            if a: self.updatePlot()
+            else: print("Done")
+            print(self.M)
+        
+        
+        
+m = model(4.6,273,10)
+m.runModel()
+m.showPlots()
