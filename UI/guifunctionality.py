@@ -1,28 +1,23 @@
 from __future__ import unicode_literals
-import random
 import matplotlib
 import webbrowser
 # Make sure that we are using QT5
 matplotlib.use('Qt5Agg')
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from PyQt5 import QtCore, QtWidgets
-
+from PyQt5 import QtWidgets
 
 import cfgreader
 
 class MplCanvas(FigureCanvas):
     """Ultimately, this is a QWidget (as well as a FigureCanvasAgg, etc.)."""
 
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
+    def __init__(self, parent=None, width=5, height=3, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
-
         self.compute_initial_figure()
-
         FigureCanvas.__init__(self, fig)
         self.setParent(parent)
-
         FigureCanvas.setSizePolicy(self,
                                    QtWidgets.QSizePolicy.Expanding,
                                    QtWidgets.QSizePolicy.Expanding)
@@ -34,21 +29,31 @@ class MplCanvas(FigureCanvas):
 class DynamicMplCanvas(MplCanvas):
     """A canvas that updates itself every second with a new plot."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, ModelInstance, *args, **kwargs):
+        self.ModelInstance = ModelInstance
         MplCanvas.__init__(self, *args, **kwargs)
-        timer = QtCore.QTimer(self)
-        timer.timeout.connect(self.update_figure)
-        timer.start(1000)
+        self.graph = "thrust"
+        
+    def setGraph(self, graph):
+        if graph.lower() == "thrust":
+            self.graph = "thrust"
+        else:
+            self.graph = "thrust"
 
     def compute_initial_figure(self):
-        self.axes.plot([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 
-                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], 'r')
+        self.axes.plot([0], [0], 'r')
 
     def update_figure(self):
         # Build a list of 4 random integers between 0 and 10 (both inclusive)
-        l = [random.randint(0, 10) for i in range(50)]
+        a = self.ModelInstance.grabArrays()
+        if self.graph == "thrust":
+            self.axes.set_xlabel("Time")
+            self.axes.set_ylabel("Thrust")
+            x = a["Time Array"]
+            y = a["Thrust Array"]
+        #l = [random.randint(0, 10) for i in range(590)]
         self.axes.cla()
-        self.axes.plot(range(50), l, 'r')
+        self.axes.plot(x, y, 'r')
         self.draw()
 
 
@@ -139,6 +144,6 @@ def variablesWindowSaveButtonClicked(WindowUI):
 def loadDatabasesButtonClicked(WindowWidget,WindowUI):
     showWindow(WindowWidget)
 
-def startButtonClicked(WindowWidget, WindowUI):
-    WindowUI.progressBar.setValue(WindowUI.progressBar.value() + 1)
+def startButtonClicked(WindowWidget, WindowUI, ModelInstance):
+    ModelInstance.runModel()
         

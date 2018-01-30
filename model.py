@@ -12,10 +12,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from datareader import grabProps, calcQuality
 
-class model():
+class Model():
     
     
-    def __init__(self, mass, temperature, maxT = 60, minM = 0):
+    def __init__(self, mass, temperature, maxTime = 60, minMass = 0):
         """
             Input in kg and K
         """
@@ -23,8 +23,8 @@ class model():
         
         self.iterations = 0
         self.t = 0
-        self.maxT = maxT
-        self.minM = minM
+        self.maxT = maxTime
+        self.minM = minMass
         self.M = mass
         self.T1 = temperature
         self.rho1 = self.M/self.V
@@ -39,6 +39,12 @@ class model():
         
         self.updatePlot()
         #self.showPlots()
+    
+    def addGui(self, app, guiPlot, progressBar):
+        self.inGui = True
+        self.guiPlot = guiPlot
+        self.progressBar = progressBar
+        self.app = app
     
     def initialState(self):
         
@@ -131,12 +137,7 @@ class model():
         #fig1.canvas.draw()
         #fig2.canvas.draw()
         
-        return
-    
-    # =========================================================================
-    # Inputs
-    # =========================================================================
-    
+        return 
     
     def timeStep(self):
         self.iterations += 1
@@ -180,12 +181,14 @@ class model():
         self.mdot_inc = self.Cd*self.Ac*(
                 (2*self.rho1*((self.P1-self.P2)*6894.76))**0.5
                 )
-        self.mdot_HEM = self.Cd*self.rho2*self.Ac*((2*((self.h1-self.h2)))**0.5)
+        self.mdot_HEM = self.Cd*self.rho2*self.Ac*(
+                (2*((self.h1-self.h2)))**0.5
+                )
         if isnan(self.mdot_HEM): self.mdot_HEM = 0
         self.mdot = self.Cd*((1-W)*self.mdot_inc+W*self.mdot_HEM)
-    # =============================================================================
+    # =========================================================================
     #     Temporary
-    # =============================================================================
+    # =========================================================================
         mdotNozzle = self.mdot*((1+self.OF)/self.OF)
         k = 1.1123
         Tc = 2180
@@ -199,9 +202,9 @@ class model():
         self.thrust = self.Pc*Cf*nozThroatArea
         self.Pc = self.Pc/6894.76
     
-    # =============================================================================
+    # =========================================================================
     #     End
-    # =============================================================================
+    # =========================================================================
         # Update properties
         self.M -= self.mdot*self.dt
         self.Hdot = self.h1*self.mdot
@@ -242,18 +245,30 @@ class model():
     
     def showPlots(self):
         plt.show()
-        
+    
+    def grabArrays(self):
+        Arrays = {}
+        Arrays["Time Array"] = self.tArray
+        Arrays["Thrust Array"] = self.thrustArray
+        return Arrays
+    
     def runModel(self):
-        a = True
-        #self.showPlots()
-        while a: 
-            a = self.timeStep()
-            if a: self.updatePlot()
-            else: print("Done")
-            print(self.M)
+       a = True
+       while a:
+           a = self.timeStep()
+           self.updatePlot()
+           if self.inGui:
+               self.guiPlot.update_figure()
+               self.app.processEvents()
+               prog = (1-((self.maxT-self.t)/self.maxT))*100           
+               self.progressBar.setValue(prog)
+           
+       return True 
         
         
         
-m = model(4.6,273,10)
-m.runModel()
-m.showPlots()
+# =============================================================================
+# m = model(4.6,273,10)
+# m.runModel()
+# m.showPlots()
+# =============================================================================

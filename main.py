@@ -4,7 +4,7 @@ import UI.guifunctionality as gf
 import UI.gui as gui
 import UI.variables as variables
 import UI.databases as databases
-
+import model
 
 
 
@@ -30,7 +30,7 @@ def buttonsConnect():
             lambda: gf.loadDatabasesButtonClicked(DatabasesWindow, DbWindow)
             )
     MWindow.startButton.clicked.connect(
-            lambda: gf.startButtonClicked(MainWindow,MWindow)
+            lambda: gf.startButtonClicked(MainWindow,MWindow, ModelInstance)
             )
     
     VarWindow.buttonBox.clicked.connect(
@@ -53,12 +53,14 @@ if __name__ == "__main__":
     DbWindow = databases.Ui_DatabasesWindow()
     DbWindow.setupUi(DatabasesWindow)
     
-    
+    ModelInstance = model.Model(4.6,273,15)
     
     # Adding the plotter to the GUI
     plotter = QtWidgets.QVBoxLayout(MWindow.widget)
-    dc = gf.DynamicMplCanvas(MWindow.widget, width=5, height=4, dpi=100)
+    dc = gf.DynamicMplCanvas(ModelInstance, MWindow.widget, width=5, height=4, dpi=100)
     plotter.addWidget(dc)
+
+    ModelInstance.addGui(app, dc, MWindow.progressBar)
 
     # Connecting buttons
     buttonsConnect()

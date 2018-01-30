@@ -83,8 +83,8 @@ def readSettingsFromFile(ParserObject, settingsPath):
         simSet = config["Simulation Settings"]
         cfg = {}
         cfg["ox_tank_vol_L"]        = rDim["Oxidizer Tank Volume (L)"]
-        cfg["noz_thr_area_cm2"]      = rDim["Nozzle Throat Area (cm^2)"]
-        cfg["noz_ext_area_cm2"]      = rDim["Nozzle Exit Area (cm^2)"]
+        cfg["noz_thr_area_cm2"]     = rDim["Nozzle Throat Area (cm^2)"]
+        cfg["noz_ext_area_cm2"]     = rDim["Nozzle Exit Area (cm^2)"]
         cfg["ox_fuel_ratio"]        = rProp["Average Oxidizer/Fuel Ratio"]
         cfg["ramp_up_s"]            = rProp["Ramp Up Time (s)"]
         cfg["ramp_down_s"]          = rProp["Ramp Down Time (s)"]
