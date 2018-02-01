@@ -35,11 +35,23 @@
        <layout class="QVBoxLayout" name="verticalLayoutVariablesConsole">
         <item>
          <widget class="QTextBrowser" name="textBrowser">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="maximumSize">
            <size>
             <width>16777215</width>
             <height>1677215</height>
            </size>
+          </property>
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Waterloo Rocketry - OpenThrust 0.1&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Thank you for using this program, please see LICENSE file for licensing information.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Check out our github and team site under About in the menu bar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
@@ -59,6 +71,13 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QPushButton" name="setSimulationButton">
+            <property name="text">
+             <string>Set Simulation Settings</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
        </layout>
@@ -72,6 +91,26 @@
          <widget class="QProgressBar" name="progressBar">
           <property name="value">
            <number>0</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="cancelButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Cancel</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="resetButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Reset</string>
           </property>
          </widget>
         </item>

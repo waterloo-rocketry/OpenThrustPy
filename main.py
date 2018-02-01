@@ -6,7 +6,13 @@ import UI.variables as variables
 import UI.databases as databases
 import model
 
+VERSION = 0.1
 
+preamble = "Waterloo Rocketry - OpenThrust " + str(VERSION)
+preamble+= "\nThank you for using this program, please see"
+preamble+= " LICENSE file for licensing information."
+preamble+= "\nCheck out our github and team site under"
+preamble+= " About in the menu bar."
 
 
 def buttonsConnect():
@@ -30,7 +36,13 @@ def buttonsConnect():
             lambda: gf.loadDatabasesButtonClicked(DatabasesWindow, DbWindow)
             )
     MWindow.startButton.clicked.connect(
-            lambda: gf.startButtonClicked(MainWindow,MWindow, ModelInstance)
+            lambda: gf.startButtonClicked(MainWindow, MWindow, ModelInstance)
+            )
+    MWindow.cancelButton.clicked.connect(
+            lambda: gf.cancelButtonClicked(MainWindow, MWindow, ModelInstance)
+            )
+    MWindow.resetButton.clicked.connect(
+            lambda: gf.resetButtonClicked(MainWindow, MWindow, ModelInstance)
             )
     
     VarWindow.buttonBox.clicked.connect(
@@ -57,18 +69,21 @@ if __name__ == "__main__":
     
     # Adding the plotter to the GUI
     plotter = QtWidgets.QVBoxLayout(MWindow.widget)
-    dc = gf.DynamicMplCanvas(ModelInstance, MWindow.widget, width=5, height=4, dpi=100)
+    dc = gf.DynamicMplCanvas(ModelInstance, MWindow.widget, 
+                             width=5, height=4, dpi=100
+                             )
     plotter.addWidget(dc)
-
-    ModelInstance.addGui(app, dc, MWindow.progressBar)
+    ModelInstance.addGui(app, dc, MWindow.progressBar, MWindow.textBrowser)
 
     # Connecting buttons
     buttonsConnect()
-    gf.grabSetSettings(VarWindow)
-
-
     
-
+    gf.grabSetSettings(VarWindow)
+    
+    # Setting initial text
+    gf.printToGui(preamble, MWindow.textBrowser)
+    MWindow.statusbar.showMessage("Version: " + str(VERSION))
+    
     
     MainWindow.show()
     

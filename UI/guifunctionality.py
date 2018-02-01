@@ -127,7 +127,12 @@ def openGithub():
     
 def openTeamSite():
     webbrowser.open("http://waterloorocketry.com")
+    
+def printToGui(text, textBrowser):
+    textBrowser.append(str(text))
 
+    
+    
 #########################
 # Button functionalities#
 #########################
@@ -145,5 +150,24 @@ def loadDatabasesButtonClicked(WindowWidget,WindowUI):
     showWindow(WindowWidget)
 
 def startButtonClicked(WindowWidget, WindowUI, ModelInstance):
-    ModelInstance.runModel()
+    if ModelInstance.running == False:
+        ModelInstance.running = True
+        WindowUI.statusbar.showMessage("Running...")
+        WindowUI.startButton.setDisabled(True)
+        WindowUI.cancelButton.setEnabled(True)
+        ModelInstance.runModel()
+        WindowUI.resetButton.setEnabled(True)
+        WindowUI.cancelButton.setDisabled(True)
+        ModelInstance.running = False
+        WindowUI.statusbar.showMessage("Idle")
         
+def cancelButtonClicked(WindowWidget, WindowUI, ModelInstance):
+    if ModelInstance.running == True:
+        ModelInstance.cancel = True
+    
+def resetButtonClicked(WindowWidget, WindowUI, ModelInstance):
+    ModelInstance.reset()
+    WindowUI.resetButton.setDisabled(True)
+    WindowUI.startButton.setEnabled(True)
+    WindowUI.cancelButton.setDisabled(True)
+    

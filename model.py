@@ -10,27 +10,39 @@ import cfgreader
 from math import isnan
 import numpy as np
 import matplotlib.pyplot as plt
+from UI.guifunctionality import printToGui
 from datareader import grabProps, calcQuality
+from dataoutputtocsv import outputToDisk
 
 class Model():
     
     
-    def __init__(self, mass, temperature, maxTime = 60, minMass = 0):
+    def __init__(self, mass, temperature, 
+                 maxTime = 60, minMass = 0, maxIterations = 0):
         """
             Input in kg and K
         """
-        self.grabSettings("./settings.cfg")
+        self.initMass = mass
+        self.initTemperature = temperature
+        self.initMaxTime = maxTime
+        self.initMinMass = minMass
+        self.initMaxIter = maxIterations
         
+        
+        self.grabSettings("./settings.cfg")
+        self.cancel = False
+        self.running = False
         self.iterations = 0
         self.t = 0
-        self.maxT = maxTime
-        self.minM = minMass
-        self.M = mass
-        self.T1 = temperature
+        self.maxT = self.initMaxTime
+        self.minM = self.initMinMass
+        self.maxIter = self.initMaxIter
+        self.M = self.initMass
+        self.T1 = self.initTemperature
         self.rho1 = self.M/self.V
         self.initialState()
         
-        self.Pc = 0
+        self.Pc = 14.7
         self.thrust = 0
         self.tArray, self.MArray, self.T1Array = [], [], []
         self.mdotArray, self.thrustArray = [], []
@@ -38,13 +50,64 @@ class Model():
         self.Cd=0.8
         
         self.updatePlot()
-        #self.showPlots()
-    
-    def addGui(self, app, guiPlot, progressBar):
+        
+    def addGui(self, app, guiPlot, progressBar, textBrowser):
         self.inGui = True
         self.guiPlot = guiPlot
         self.progressBar = progressBar
         self.app = app
+        self.textBrowser = textBrowser
+    
+    def outputFile(self):
+        headers = ["Time (s)", "Tank Temperature (K) ", "Oxidizer Flow (kg/s)",
+                   "Chamber Pressure (psi)", "Thrust (lb)"]
+        columns = [self.tArray, self.T1Array, self.mdotArray, 
+                   self.PcArray, self.thrustArray]
+        outputToDisk(headers, columns)
+        self.outputText("CSV file created")
+        
+    def outputText(self, text):
+        if self.inGui:
+            printToGui(str(text), self.textBrowser)
+        else:
+            print(str(text))
+    
+    def reInitModelInst(self, mass, temperature, 
+                        maxTime = 60, minMass = 0, maxIterations = 0):
+        self.initMass = mass
+        self.initTemperature = temperature
+        self.initMaxTime = maxTime
+        self.initMinMass = minMass
+        self.initMaxIter = maxIterations
+    
+    def reset(self):
+        self.outputText("Resetting")
+        self.grabSettings("./settings.cfg")
+        self.cancel = False
+        self.running = False
+        self.iterations = 0
+        self.t = 0
+        self.maxT = self.initMaxTime
+        self.minM = self.initMinMass
+        self.maxIter = self.initMaxIter
+        self.M = self.initMass
+        self.T1 = self.initTemperature
+        self.rho1 = self.M/self.V
+        
+        self.initialState()
+        self.Pc = 14.7
+        self.thrust = 0
+        self.tArray, self.MArray, self.T1Array = [], [], []
+        self.mdotArray, self.thrustArray = [], []
+        self.rho1Array, self.PcArray = [], []
+        self.updatePlot()
+        
+        if self.inGui:
+            self.progressBar.setValue(0)
+            self.guiPlot.update_figure()
+            
+    
+
     
     def initialState(self):
         
@@ -142,12 +205,26 @@ class Model():
     def timeStep(self):
         self.iterations += 1
         
+        # Break Cases
+        if self.cancel:
+            self.outputText("Cancelled run, outputting file...")
+            self.outputFile()
+            self.cancel = False
+            return False
         if self.M < self.minM: 
-            print("Minimum mass reached")
+            self.outputText("Minimum mass reached, outputting file...")
+            self.outputFile()
             return False
         if self.t > self.maxT:
-            print("Maximum time reached")
+            self.outputText("Maximum time reached, outputting file...")
+            self.outputFile()
             return False
+        if (self.iterations >= self.maxIter and 
+            self.maxIter > 0):
+            self.outputText("Maximum iterations reached, outputting file...")
+            self.outputFile()
+            return False
+        
         # Match fluid properties
         guess = [300,300]
         pFunc = lambda v: [grabProps(v[0],v[1])["P"] - self.P1,
@@ -254,6 +331,9 @@ class Model():
     
     def runModel(self):
        a = True
+       self.outputText("Running Solomon model with " + str(self.initMass)
+                        + " kg at " + str(self.initTemperature) + " Kelvin..."
+                        )
        while a:
            a = self.timeStep()
            self.updatePlot()
