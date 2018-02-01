@@ -4,7 +4,7 @@ import UI.guifunctionality as gf
 import UI.gui as gui
 import UI.variables as variables
 import UI.databases as databases
-import model
+import Models.solomonmodel as solomonmodel
 
 VERSION = 0.1
 
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     DbWindow = databases.Ui_DatabasesWindow()
     DbWindow.setupUi(DatabasesWindow)
     
-    ModelInstance = model.Model(4.6,273,15)
+    ModelInstance = solomonmodel.SolomonModel(4.6,273,15)
     
     # Adding the plotter to the GUI
     plotter = QtWidgets.QVBoxLayout(MWindow.widget)

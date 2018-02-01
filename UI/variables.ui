@@ -36,7 +36,7 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
+    <item row="4" column="1">
      <widget class="QLineEdit" name="lineEditOxFuel">
       <property name="sizePolicy">
        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -46,10 +46,10 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
+    <item row="5" column="1">
      <widget class="QLineEdit" name="lineEditRampUp"/>
     </item>
-    <item row="5" column="1">
+    <item row="6" column="1">
      <widget class="QLineEdit" name="lineEditRampDown">
       <property name="sizePolicy">
        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -59,7 +59,7 @@
       </property>
      </widget>
     </item>
-    <item row="8" column="1">
+    <item row="9" column="1">
      <widget class="QSpinBox" name="spinBoxFlowModel">
       <property name="sizePolicy">
        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -76,7 +76,7 @@
       </property>
      </widget>
     </item>
-    <item row="12" column="1">
+    <item row="13" column="1">
      <widget class="QDialogButtonBox" name="buttonBox">
       <property name="standardButtons">
        <set>QDialogButtonBox::Save</set>
@@ -96,7 +96,7 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
+    <item row="4" column="0">
      <widget class="QLabel" name="labelOxfuel">
       <property name="text">
        <string>Average O/F Ratio</string>
@@ -110,70 +110,70 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="0">
+    <item row="5" column="0">
      <widget class="QLabel" name="labelRampUp">
       <property name="text">
        <string>Ramp Up Time (s)</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="0">
+    <item row="6" column="0">
      <widget class="QLabel" name="labelRampDown">
       <property name="text">
        <string>Ramp Down Time (s)</string>
       </property>
      </widget>
     </item>
-    <item row="6" column="0">
+    <item row="7" column="0">
      <widget class="QLabel" name="labelTimeStep">
       <property name="text">
        <string>Time Step (s)</string>
       </property>
      </widget>
     </item>
-    <item row="7" column="0">
+    <item row="8" column="0">
      <widget class="QLabel" name="labelConvWeight">
       <property name="text">
        <string>Convergence Weighting</string>
       </property>
      </widget>
     </item>
-    <item row="8" column="0">
+    <item row="9" column="0">
      <widget class="QLabel" name="labelFlowModel">
       <property name="text">
        <string>Flow Model</string>
       </property>
      </widget>
     </item>
-    <item row="9" column="0">
+    <item row="10" column="0">
      <widget class="QLabel" name="labelIntType">
       <property name="text">
        <string>Integration Type</string>
       </property>
      </widget>
     </item>
-    <item row="10" column="1">
+    <item row="11" column="1">
      <widget class="QCheckBox" name="checkBoxCalcCf">
       <property name="text">
        <string/>
       </property>
      </widget>
     </item>
-    <item row="10" column="0">
+    <item row="11" column="0">
      <widget class="QLabel" name="labelCalcCf">
       <property name="text">
        <string>Calculate Cf</string>
       </property>
      </widget>
     </item>
-    <item row="11" column="0">
+    <item row="12" column="0">
      <widget class="QLabel" name="labelC12">
       <property name="text">
        <string>C12</string>
       </property>
      </widget>
     </item>
-    <item row="11" column="1">
+    <item row="12" column="1">
      <widget class="QLineEdit" name="lineEditC12">
       <property name="enabled">
        <bool>false</bool>
@@ -186,7 +186,7 @@
       </property>
      </widget>
     </item>
-    <item row="9" column="1">
+    <item row="10" column="1">
      <widget class="QSpinBox" name="spinBoxIntType">
       <property name="sizePolicy">
        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -196,7 +196,7 @@
       </property>
      </widget>
     </item>
-    <item row="6" column="1">
+    <item row="7" column="1">
      <widget class="QLineEdit" name="lineEditTimeStep">
       <property name="sizePolicy">
        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -206,7 +206,7 @@
       </property>
      </widget>
     </item>
-    <item row="7" column="1">
+    <item row="8" column="1">
      <widget class="QLineEdit" name="lineEditConvWeight">
       <property name="sizePolicy">
        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -225,6 +225,16 @@
        </sizepolicy>
       </property>
      </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="labelInjArea">
+      <property name="text">
+       <string>Injector Area (cm²)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="lineEditInjArea"/>
     </item>
    </layout>
   </widget>

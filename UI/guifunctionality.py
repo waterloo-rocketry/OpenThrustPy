@@ -9,9 +9,12 @@ from PyQt5 import QtWidgets
 
 import cfgreader
 
-class MplCanvas(FigureCanvas):
-    """Ultimately, this is a QWidget (as well as a FigureCanvasAgg, etc.)."""
+# =============================================================================
+# Classes
+# =============================================================================
 
+class MplCanvas(FigureCanvas):
+    
     def __init__(self, parent=None, width=5, height=3, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
@@ -27,35 +30,36 @@ class MplCanvas(FigureCanvas):
         pass
 
 class DynamicMplCanvas(MplCanvas):
-    """A canvas that updates itself every second with a new plot."""
-
+    
     def __init__(self, ModelInstance, *args, **kwargs):
         self.ModelInstance = ModelInstance
         MplCanvas.__init__(self, *args, **kwargs)
         self.graph = "thrust"
         
     def setGraph(self, graph):
-        if graph.lower() == "thrust":
-            self.graph = "thrust"
-        else:
-            self.graph = "thrust"
+        self.graph = graph.lower()
 
     def compute_initial_figure(self):
         self.axes.plot([0], [0], 'r')
 
     def update_figure(self):
-        # Build a list of 4 random integers between 0 and 10 (both inclusive)
         a = self.ModelInstance.grabArrays()
+        x = a["Time Array"]
         if self.graph == "thrust":
-            self.axes.set_xlabel("Time")
-            self.axes.set_ylabel("Thrust")
-            x = a["Time Array"]
             y = a["Thrust Array"]
-        #l = [random.randint(0, 10) for i in range(590)]
+        elif self.graph == "tank temperature":
+            y = a["Tank Temperature Array"]
+        elif self.graph == "injector mass flow":
+            y = a["Injector Mass Flow Array"]
+        elif self.graph == "chamber pressure":
+            y = a["Chamber Pressure Graph"]
         self.axes.cla()
         self.axes.plot(x, y, 'r')
         self.draw()
 
+# =============================================================================
+# GUI Functions
+# =============================================================================
 
 def showWindow(windowWidget):
     windowWidget.show()
@@ -74,7 +78,8 @@ def settingsGrab(window):
        'flow_model':        str(window.spinBoxFlowModel.text()), 
        'integ_type':        str(window.spinBoxIntType.text()), 
        'calc_thrust_coef':  str(window.checkBoxCalcCf.isChecked()), 
-       'C12':               str(window.lineEditC12.text())
+       'C12':               str(window.lineEditC12.text()),
+       'inj_area_cm2':      str(window.lineEditInjArea.text())
        }
     return cfg
 
@@ -92,6 +97,7 @@ def settingsSet(window, cfg):
     window.spinBoxIntType.setValue         (int(cfg['integ_type']))
     window.checkBoxCalcCf.setCheckState    (bool(cfg['calc_thrust_coef']))
     window.lineEditC12.setText             (cfg['C12'])
+    window.lineEditInjArea.setText         (cfg['inj_area_cm2'])
     
 def settingsSave(Parser, settingsPath, window):
     # Saves settings data from GUI to file
@@ -131,11 +137,10 @@ def openTeamSite():
 def printToGui(text, textBrowser):
     textBrowser.append(str(text))
 
-    
-    
-#########################
-# Button functionalities#
-#########################
+
+# =============================================================================
+# Button Functions
+# =============================================================================
 
 
 def setVariablesButtonClicked(WindowWidget, WindowUI):

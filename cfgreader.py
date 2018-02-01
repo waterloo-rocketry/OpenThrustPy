@@ -23,6 +23,11 @@ def writeSettingsToFile(ParserObject, settingsPath, cfg):
             cfg["noz_ext_area_cm2"]
             )
     config.set(
+            "Rocket Dimensions",
+            "Injector Area (cm^2)",
+            cfg["inj_area_cm2"]
+            )
+    config.set(
             "Rocket Properties",     
             "Average Oxidizer/Fuel Ratio",   
             cfg["ox_fuel_ratio"]
@@ -85,6 +90,7 @@ def readSettingsFromFile(ParserObject, settingsPath):
         cfg["ox_tank_vol_L"]        = rDim["Oxidizer Tank Volume (L)"]
         cfg["noz_thr_area_cm2"]     = rDim["Nozzle Throat Area (cm^2)"]
         cfg["noz_ext_area_cm2"]     = rDim["Nozzle Exit Area (cm^2)"]
+        cfg["inj_area_cm2"]         = rDim["Injector Area (cm^2)"]
         cfg["ox_fuel_ratio"]        = rProp["Average Oxidizer/Fuel Ratio"]
         cfg["ramp_up_s"]            = rProp["Ramp Up Time (s)"]
         cfg["ramp_down_s"]          = rProp["Ramp Down Time (s)"]
@@ -110,6 +116,7 @@ def createNewSettingsFile(settingsPath):
     config["Rocket Dimensions"]["Oxidizer Tank Volume (L)"]         = "6.9"
     config["Rocket Dimensions"]["Nozzle Throat Area (cm^2)"]        = "3.82646"
     config["Rocket Dimensions"]["Nozzle Exit Area (cm^2)"]          = "18.1001"
+    config["Rocket Dimensions"]["Injector Area (cm^2)"]             = "0.2826"
 
     config["Rocket Properties"]["Average Oxidizer/Fuel Ratio"]      = "2.1"
     config["Rocket Properties"]["Ramp Up Time (s)"]                 = "4"
