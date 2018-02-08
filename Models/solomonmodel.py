@@ -6,7 +6,7 @@ L refers to liquid phase, V refers to vapor phase
 import scipy.optimize as optimize
 from math import isnan
 import numpy as np
-from datareader import grabProps, calcQuality
+from datareader import grabProps, calcQuality, grabRpaPoint
 from dataoutputtocsv import outputToDisk
 from Models.basemodel import BaseModel
 
@@ -123,15 +123,16 @@ class SolomonModel(BaseModel):
     #     Temporary
     # =========================================================================
         mdotNozzle = self.mdot*((1+self.OF)/self.OF)
-        k = 1.1123
-        Tc = 2180
-        R = (8.314/22.9529)*1000
+        rpaPoint = grabRpaPoint(self.OF, self.Pc)
+        k = rpaPoint["k"]
+        Tc = rpaPoint["Tc"]
+        R = rpaPoint["R"]
         nozThroatArea = 0.000382646
         a = (k*R*Tc)**0.5
         b = (k+1)/(k-1)
         c = (2/(k+1))
         self.Pc = (mdotNozzle*a)/(k*nozThroatArea*((c**b)**0.5))
-        Cf = 1.457
+        Cf = rpaPoint["Cf opt"]
         self.thrust = self.Pc*Cf*nozThroatArea
         self.Pc = self.Pc/6894.76
     
