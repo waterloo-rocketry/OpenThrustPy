@@ -82,9 +82,9 @@ def settingsGrab(window):
        'ramp_down_s':       str(window.SpinBoxRampDown.value()), 
        'time_step_s':       str(window.SpinBoxTimeStep.value()), 
        'conv_weight':       str(window.SpinBoxConverge.value()), 
-       'flow_model':        str(window.checkBoxFlowModel.isChecked()), 
-       'integ_type':        str(window.checkBoxIntType.isChecked()), 
-       'calc_thrust_coef':  str(window.checkBoxCalcCf.isChecked()), 
+       'flow_model':        str(window.checkBoxFlowModel.checkState()), 
+       'integ_type':        str(window.checkBoxIntType.checkState()), 
+       'calc_thrust_coef':  str(window.checkBoxCalcCf.checkState()), 
        'C12':               str(window.SpinBoxC12.value()),
        'inj_area_cm2':      str(window.SpinBoxInjA.value()),
        'vapor_factor':      str(window.SpinBoxVaporFactor.value())
@@ -101,9 +101,9 @@ def settingsSet(window, cfg):
     window.SpinBoxRampDown.setValue         (float(cfg['ramp_down_s']))
     window.SpinBoxTimeStep.setValue         (float(cfg['time_step_s']))
     window.SpinBoxConverge.setValue         (float(cfg['conv_weight']))
-    window.checkBoxFlowModel.setCheckState  (bool(cfg['flow_model']))
-    window.checkBoxIntType.setCheckState    (bool(cfg['integ_type']))
-    window.checkBoxCalcCf.setCheckState    (bool(cfg['calc_thrust_coef']))
+    window.checkBoxFlowModel.setCheckState  (int(cfg['flow_model']))
+    window.checkBoxIntType.setCheckState    (int(cfg['integ_type']))
+    window.checkBoxCalcCf.setCheckState    (int(cfg['calc_thrust_coef']))
     window.SpinBoxC12.setValue              (float(cfg['C12']))
     window.SpinBoxInjA.setValue          (float(cfg['inj_area_cm2']))
     window.SpinBoxVaporFactor.setValue      (float(cfg['vapor_factor']))

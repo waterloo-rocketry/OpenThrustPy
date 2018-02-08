@@ -130,9 +130,9 @@ def createNewSettingsFile(settingsPath):
 
     config["Simulation Settings"]["Time Step (s)"]                  = "0.05"
     config["Simulation Settings"]["Convergence Weighting"]          = "0.2"
-    config["Simulation Settings"]["Flow Model"]                     = "True"
-    config["Simulation Settings"]["Addams Integration"]             = "True"
-    config["Simulation Settings"]["Calculate Thrust Coefficient"]   = "False"
+    config["Simulation Settings"]["Flow Model"]                     = "2"
+    config["Simulation Settings"]["Addams Integration"]             = "2"
+    config["Simulation Settings"]["Calculate Thrust Coefficient"]   = "0"
     config["Simulation Settings"]["C12"]                            = "2.23"
     config["Simulation Settings"]["Vaporization Factor"]            = "0.005"
 

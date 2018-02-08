@@ -226,6 +226,29 @@
       </property>
      </widget>
     </item>
+    <item row="10" column="0">
+     <widget class="QLabel" name="labelVaporization">
+      <property name="text">
+       <string>Vaporization Factor</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="1">
+     <widget class="QDoubleSpinBox" name="SpinBoxVaporFactor">
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::NoButtons</enum>
+      </property>
+      <property name="correctionMode">
+       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+      </property>
+      <property name="decimals">
+       <number>3</number>
+      </property>
+      <property name="maximum">
+       <double>1.000000000000000</double>
+      </property>
+     </widget>
+    </item>
     <item row="11" column="0">
      <widget class="QLabel" name="labelFlowModel">
       <property name="text">
@@ -233,10 +256,33 @@
       </property>
      </widget>
     </item>
+    <item row="11" column="1">
+     <widget class="QCheckBox" name="checkBoxFlowModel">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
     <item row="12" column="0">
      <widget class="QLabel" name="labelIntType">
       <property name="text">
        <string>Use Addam's Integration</string>
+      </property>
+     </widget>
+    </item>
+    <item row="12" column="1">
+     <widget class="QCheckBox" name="checkBoxIntType">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+      <property name="tristate">
+       <bool>false</bool>
       </property>
      </widget>
     </item>
@@ -261,6 +307,22 @@
       </property>
      </widget>
     </item>
+    <item row="14" column="1">
+     <widget class="QDoubleSpinBox" name="SpinBoxC12">
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::NoButtons</enum>
+      </property>
+      <property name="correctionMode">
+       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+      </property>
+      <property name="decimals">
+       <number>3</number>
+      </property>
+     </widget>
+    </item>
     <item row="16" column="1">
      <widget class="QDialogButtonBox" name="buttonBox">
       <property name="standardButtons">
@@ -268,65 +330,6 @@
       </property>
       <property name="centerButtons">
        <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="12" column="1">
-     <widget class="QCheckBox" name="checkBoxIntType">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-      <property name="tristate">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="1">
-     <widget class="QCheckBox" name="checkBoxFlowModel">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="10" column="0">
-     <widget class="QLabel" name="labelVaporization">
-      <property name="text">
-       <string>Vaporization Factor</string>
-      </property>
-     </widget>
-    </item>
-    <item row="10" column="1">
-     <widget class="QDoubleSpinBox" name="SpinBoxVaporFactor">
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::NoButtons</enum>
-      </property>
-      <property name="correctionMode">
-       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-      </property>
-      <property name="decimals">
-       <number>3</number>
-      </property>
-      <property name="maximum">
-       <double>1.000000000000000</double>
-      </property>
-     </widget>
-    </item>
-    <item row="14" column="1">
-     <widget class="QDoubleSpinBox" name="SpinBoxC12">
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::NoButtons</enum>
-      </property>
-      <property name="correctionMode">
-       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-      </property>
-      <property name="decimals">
-       <number>3</number>
       </property>
      </widget>
     </item>
