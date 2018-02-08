@@ -18,7 +18,7 @@ class MplCanvas(FigureCanvas):
     def __init__(self, parent=None, width=5, height=3, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
-        self.compute_initial_figure()
+        self.initialFig=self.compute_initial_figure()
         FigureCanvas.__init__(self, fig)
         self.setParent(parent)
         FigureCanvas.setSizePolicy(self,
@@ -40,7 +40,13 @@ class DynamicMplCanvas(MplCanvas):
         self.graph = graph.lower()
 
     def compute_initial_figure(self):
-        self.axes.plot([0], [0], 'r')
+        self.line, =self.axes.plot([], [],color='red',label='thrust')
+        self.axes.set_xlim(0, 20)
+        self.axes.set_ylim(0, +2000)
+        self.axes.set_xlabel('Time (s)')
+        self.axes.set_ylabel('Thrust (N)')
+        legend = self.axes.legend(loc='best', shadow=False, fontsize='medium')
+        legend.get_frame().set_alpha(0.5)
 
     def update_figure(self):
         a = self.ModelInstance.grabArrays()
@@ -53,8 +59,9 @@ class DynamicMplCanvas(MplCanvas):
             y = a["Injector Mass Flow Array"]
         elif self.graph == "chamber pressure":
             y = a["Chamber Pressure Graph"]
-        self.axes.cla()
-        self.axes.plot(x, y, 'r')
+        self.line.set_ydata(y)
+        self.line.set_xdata(x)
+        #self.axes.plot(x, y, 'r')
         self.draw()
 
 # =============================================================================
