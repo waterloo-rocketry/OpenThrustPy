@@ -59,7 +59,7 @@ def writeSettingsToFile(ParserObject, settingsPath, cfg):
             )
     config.set(
             "Simulation Settings",   
-            "Integeration Type",             
+            "Addams Integration",             
             cfg["integ_type"]
             )
     config.set(
@@ -71,6 +71,11 @@ def writeSettingsToFile(ParserObject, settingsPath, cfg):
             "Simulation Settings",   
             "C12",                           
             cfg["C12"]
+            )
+    config.set(
+            "Simulation Settings",   
+            "Vaporization Factor",                           
+            cfg["vapor_factor"]
             )
     
     with open(SETTINGS_PATH, 'w') as configfile:
@@ -97,9 +102,10 @@ def readSettingsFromFile(ParserObject, settingsPath):
         cfg["time_step_s"]          = simSet["Time Step (s)"]
         cfg["conv_weight"]          = simSet["Convergence Weighting"]
         cfg["flow_model"]           = simSet["Flow Model"]
-        cfg["integ_type"]           = simSet["Integeration Type"]
+        cfg["integ_type"]           = simSet["Addams Integration"]
         cfg["calc_thrust_coef"]     = simSet["Calculate Thrust Coefficient"]
         cfg["C12"]                  = simSet["C12"]
+        cfg["vapor_factor"]         = simSet["Vaporization Factor"]
         return cfg
     except:
         print("Improperly formatted settings file, creating new one...")
@@ -124,10 +130,11 @@ def createNewSettingsFile(settingsPath):
 
     config["Simulation Settings"]["Time Step (s)"]                  = "0.05"
     config["Simulation Settings"]["Convergence Weighting"]          = "0.2"
-    config["Simulation Settings"]["Flow Model"]                     = "2"
-    config["Simulation Settings"]["Integeration Type"]              = "2"
+    config["Simulation Settings"]["Flow Model"]                     = "True"
+    config["Simulation Settings"]["Addams Integration"]             = "True"
     config["Simulation Settings"]["Calculate Thrust Coefficient"]   = "False"
     config["Simulation Settings"]["C12"]                            = "2.23"
+    config["Simulation Settings"]["Vaporization Factor"]            = "0.005"
 
     with open(settingsPath, 'w') as configfile:
         config.write(configfile)

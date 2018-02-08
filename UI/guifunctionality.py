@@ -74,37 +74,39 @@ def showWindow(windowWidget):
 def settingsGrab(window):
     # Grabs the settings data in the variables window and returns it as cfg
     cfg = {
-       'ox_tank_vol_L':     str(window.lineEditOxTank.text()), 
-       'noz_thr_area_cm2':  str(window.lineEditThroatA.text()), 
-       'noz_ext_area_cm2':  str(window.lineEditExitA.text()), 
-       'ox_fuel_ratio':     str(window.lineEditOxFuel.text()), 
-       'ramp_up_s':         str(window.lineEditRampUp.text()), 
-       'ramp_down_s':       str(window.lineEditRampDown.text()), 
-       'time_step_s':       str(window.lineEditTimeStep.text()), 
-       'conv_weight':       str(window.lineEditConvWeight.text()), 
-       'flow_model':        str(window.spinBoxFlowModel.text()), 
-       'integ_type':        str(window.spinBoxIntType.text()), 
+       'ox_tank_vol_L':     str(window.SpinBoxOxTank.value()), 
+       'noz_thr_area_cm2':  str(window.SpinBoxThroatA.value()), 
+       'noz_ext_area_cm2':  str(window.SpinBoxExitA.value()), 
+       'ox_fuel_ratio':     str(window.SpinBoxOxFuel.value()), 
+       'ramp_up_s':         str(window.SpinBoxRampUp.value()), 
+       'ramp_down_s':       str(window.SpinBoxRampDown.value()), 
+       'time_step_s':       str(window.SpinBoxTimeStep.value()), 
+       'conv_weight':       str(window.SpinBoxConverge.value()), 
+       'flow_model':        str(window.checkBoxFlowModel.isChecked()), 
+       'integ_type':        str(window.checkBoxIntType.isChecked()), 
        'calc_thrust_coef':  str(window.checkBoxCalcCf.isChecked()), 
-       'C12':               str(window.lineEditC12.text()),
-       'inj_area_cm2':      str(window.lineEditInjArea.text())
+       'C12':               str(window.SpinBoxC12.value()),
+       'inj_area_cm2':      str(window.SpinBoxInjA.value()),
+       'vapor_factor':      str(window.SpinBoxVaporFactor.value())
        }
     return cfg
 
 def settingsSet(window, cfg):
     # Sets the settings data in the variables window based off of cfg
-    window.lineEditOxTank.setText          (cfg['ox_tank_vol_L'])
-    window.lineEditThroatA.setText         (cfg['noz_thr_area_cm2'])
-    window.lineEditExitA.setText           (cfg['noz_ext_area_cm2'])
-    window.lineEditOxFuel.setText          (cfg['ox_fuel_ratio'])
-    window.lineEditRampUp.setText          (cfg['ramp_up_s'])
-    window.lineEditRampDown.setText        (cfg['ramp_down_s'])
-    window.lineEditTimeStep.setText        (cfg['time_step_s'])
-    window.lineEditConvWeight.setText      (cfg['conv_weight'])
-    window.spinBoxFlowModel.setValue       (int(cfg['flow_model']))
-    window.spinBoxIntType.setValue         (int(cfg['integ_type']))
+    window.SpinBoxOxTank.setValue           (float(cfg['ox_tank_vol_L']))
+    window.SpinBoxThroatA.setValue         (float(cfg['noz_thr_area_cm2']))
+    window.SpinBoxExitA.setValue            (float(cfg['noz_ext_area_cm2']))
+    window.SpinBoxOxFuel.setValue           (float(cfg['ox_fuel_ratio']))
+    window.SpinBoxRampUp.setValue           (float(cfg['ramp_up_s']))
+    window.SpinBoxRampDown.setValue         (float(cfg['ramp_down_s']))
+    window.SpinBoxTimeStep.setValue         (float(cfg['time_step_s']))
+    window.SpinBoxConverge.setValue         (float(cfg['conv_weight']))
+    window.checkBoxFlowModel.setCheckState  (bool(cfg['flow_model']))
+    window.checkBoxIntType.setCheckState    (bool(cfg['integ_type']))
     window.checkBoxCalcCf.setCheckState    (bool(cfg['calc_thrust_coef']))
-    window.lineEditC12.setText             (cfg['C12'])
-    window.lineEditInjArea.setText         (cfg['inj_area_cm2'])
+    window.SpinBoxC12.setValue              (float(cfg['C12']))
+    window.SpinBoxInjA.setValue          (float(cfg['inj_area_cm2']))
+    window.SpinBoxVaporFactor.setValue      (float(cfg['vapor_factor']))
     
 def settingsSave(Parser, settingsPath, window):
     # Saves settings data from GUI to file

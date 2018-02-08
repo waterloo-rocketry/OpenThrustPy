@@ -89,7 +89,7 @@ class BaseModel:
         self.rampUpTime = float(cfg["ramp_up_s"])
         self.rampDownTime = float(cfg["ramp_down_s"])
         self.convWeight = float(cfg["conv_weight"])
-        self.integrationType = float(cfg["integ_type"])
+        self.integrationType = bool(cfg["integ_type"])
         self.calcCf = bool(cfg["calc_thrust_coef"])
         self.C12 = float(cfg["C12"])
         self.Ac = float(cfg["inj_area_cm2"])*(0.0001)                   # m^2

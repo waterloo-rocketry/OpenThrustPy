@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>299</width>
-    <height>405</height>
+    <width>324</width>
+    <height>477</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,56 +27,241 @@
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QLineEdit" name="lineEditOxTank">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+     <widget class="QDoubleSpinBox" name="SpinBoxOxTank">
+      <property name="inputMethodHints">
+       <set>Qt::ImhNone</set>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::NoButtons</enum>
+      </property>
+      <property name="correctionMode">
+       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+      </property>
+      <property name="showGroupSeparator" stdset="0">
+       <bool>false</bool>
+      </property>
+      <property name="decimals">
+       <number>5</number>
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
-     <widget class="QLineEdit" name="lineEditOxFuel">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="1">
-     <widget class="QLineEdit" name="lineEditRampUp"/>
-    </item>
-    <item row="6" column="1">
-     <widget class="QLineEdit" name="lineEditRampDown">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-     </widget>
-    </item>
-    <item row="9" column="1">
-     <widget class="QSpinBox" name="spinBoxFlowModel">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
+    <item row="2" column="0">
      <widget class="QLabel" name="labelThroatA">
       <property name="text">
        <string>Nozzle Throat Area (cm²)</string>
       </property>
      </widget>
     </item>
+    <item row="2" column="1">
+     <widget class="QDoubleSpinBox" name="SpinBoxThroatA">
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::NoButtons</enum>
+      </property>
+      <property name="correctionMode">
+       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+      </property>
+      <property name="decimals">
+       <number>5</number>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="labelExitA">
+      <property name="text">
+       <string>Nozzle Exit Area (cm²)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QDoubleSpinBox" name="SpinBoxExitA">
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::NoButtons</enum>
+      </property>
+      <property name="correctionMode">
+       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+      </property>
+      <property name="decimals">
+       <number>5</number>
+      </property>
+      <property name="maximum">
+       <double>1000.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="labelInjA">
+      <property name="text">
+       <string>Injector Area (cm²)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QDoubleSpinBox" name="SpinBoxInjA">
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::NoButtons</enum>
+      </property>
+      <property name="correctionMode">
+       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+      </property>
+      <property name="decimals">
+       <number>5</number>
+      </property>
+      <property name="maximum">
+       <double>1000.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="labelOxfuel">
+      <property name="text">
+       <string>Average O/F Ratio</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QDoubleSpinBox" name="SpinBoxOxFuel">
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::NoButtons</enum>
+      </property>
+      <property name="correctionMode">
+       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+      </property>
+      <property name="decimals">
+       <number>3</number>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="labelRampUp">
+      <property name="text">
+       <string>Ramp Up Time (s)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="QDoubleSpinBox" name="SpinBoxRampUp">
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::UpDownArrows</enum>
+      </property>
+      <property name="correctionMode">
+       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+      </property>
+      <property name="decimals">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <double>60.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="labelRampDown">
+      <property name="text">
+       <string>Ramp Down Time (s)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QDoubleSpinBox" name="SpinBoxRampDown">
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::UpDownArrows</enum>
+      </property>
+      <property name="correctionMode">
+       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+      </property>
+      <property name="decimals">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <double>60.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0">
+     <widget class="QLabel" name="labelTimeStep">
+      <property name="text">
+       <string>Time Step (s)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="1">
+     <widget class="QDoubleSpinBox" name="SpinBoxTimeStep">
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::UpDownArrows</enum>
+      </property>
+      <property name="correctionMode">
+       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+      </property>
+      <property name="decimals">
+       <number>3</number>
+      </property>
+      <property name="maximum">
+       <double>1.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.005000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="0">
+     <widget class="QLabel" name="labelConvWeight">
+      <property name="text">
+       <string>Convergence Weighting</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="1">
+     <widget class="QDoubleSpinBox" name="SpinBoxConverge">
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::NoButtons</enum>
+      </property>
+      <property name="correctionMode">
+       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+      </property>
+      <property name="decimals">
+       <number>3</number>
+      </property>
+      <property name="maximum">
+       <double>1.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="0">
+     <widget class="QLabel" name="labelFlowModel">
+      <property name="text">
+       <string>Use Converging Flow Model</string>
+      </property>
+     </widget>
+    </item>
+    <item row="12" column="0">
+     <widget class="QLabel" name="labelIntType">
+      <property name="text">
+       <string>Use Addam's Integration</string>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="0">
+     <widget class="QLabel" name="labelCalcCf">
+      <property name="text">
+       <string>Calculate Cf</string>
+      </property>
+     </widget>
+    </item>
     <item row="13" column="1">
+     <widget class="QCheckBox" name="checkBoxCalcCf">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="14" column="0">
+     <widget class="QLabel" name="labelC12">
+      <property name="text">
+       <string>C12</string>
+      </property>
+     </widget>
+    </item>
+    <item row="16" column="1">
      <widget class="QDialogButtonBox" name="buttonBox">
       <property name="standardButtons">
        <set>QDialogButtonBox::Save</set>
@@ -86,192 +271,74 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="lineEditThroatA">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="labelOxfuel">
+    <item row="12" column="1">
+     <widget class="QCheckBox" name="checkBoxIntType">
       <property name="text">
-       <string>Average O/F Ratio</string>
+       <string/>
       </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="labelExitA">
-      <property name="text">
-       <string>Nozzle Exit Area (cm²)</string>
+      <property name="checked">
+       <bool>true</bool>
       </property>
-     </widget>
-    </item>
-    <item row="5" column="0">
-     <widget class="QLabel" name="labelRampUp">
-      <property name="text">
-       <string>Ramp Up Time (s)</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="0">
-     <widget class="QLabel" name="labelRampDown">
-      <property name="text">
-       <string>Ramp Down Time (s)</string>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="0">
-     <widget class="QLabel" name="labelTimeStep">
-      <property name="text">
-       <string>Time Step (s)</string>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="0">
-     <widget class="QLabel" name="labelConvWeight">
-      <property name="text">
-       <string>Convergence Weighting</string>
-      </property>
-     </widget>
-    </item>
-    <item row="9" column="0">
-     <widget class="QLabel" name="labelFlowModel">
-      <property name="text">
-       <string>Flow Model</string>
-      </property>
-     </widget>
-    </item>
-    <item row="10" column="0">
-     <widget class="QLabel" name="labelIntType">
-      <property name="text">
-       <string>Integration Type</string>
+      <property name="tristate">
+       <bool>false</bool>
       </property>
      </widget>
     </item>
     <item row="11" column="1">
-     <widget class="QCheckBox" name="checkBoxCalcCf">
+     <widget class="QCheckBox" name="checkBoxFlowModel">
       <property name="text">
        <string/>
       </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
-    <item row="11" column="0">
-     <widget class="QLabel" name="labelCalcCf">
+    <item row="10" column="0">
+     <widget class="QLabel" name="labelVaporization">
       <property name="text">
-       <string>Calculate Cf</string>
-      </property>
-     </widget>
-    </item>
-    <item row="12" column="0">
-     <widget class="QLabel" name="labelC12">
-      <property name="text">
-       <string>C12</string>
-      </property>
-     </widget>
-    </item>
-    <item row="12" column="1">
-     <widget class="QLineEdit" name="lineEditC12">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+       <string>Vaporization Factor</string>
       </property>
      </widget>
     </item>
     <item row="10" column="1">
-     <widget class="QSpinBox" name="spinBoxIntType">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+     <widget class="QDoubleSpinBox" name="SpinBoxVaporFactor">
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::NoButtons</enum>
+      </property>
+      <property name="correctionMode">
+       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+      </property>
+      <property name="decimals">
+       <number>3</number>
+      </property>
+      <property name="maximum">
+       <double>1.000000000000000</double>
       </property>
      </widget>
     </item>
-    <item row="7" column="1">
-     <widget class="QLineEdit" name="lineEditTimeStep">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+    <item row="14" column="1">
+     <widget class="QDoubleSpinBox" name="SpinBoxC12">
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::NoButtons</enum>
+      </property>
+      <property name="correctionMode">
+       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+      </property>
+      <property name="decimals">
+       <number>3</number>
       </property>
      </widget>
-    </item>
-    <item row="8" column="1">
-     <widget class="QLineEdit" name="lineEditConvWeight">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QLineEdit" name="lineEditExitA">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="labelInjArea">
-      <property name="text">
-       <string>Injector Area (cm²)</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="lineEditInjArea"/>
     </item>
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <tabstops>
-  <tabstop>lineEditOxTank</tabstop>
-  <tabstop>lineEditThroatA</tabstop>
-  <tabstop>lineEditExitA</tabstop>
-  <tabstop>lineEditOxFuel</tabstop>
-  <tabstop>lineEditRampUp</tabstop>
-  <tabstop>lineEditRampDown</tabstop>
-  <tabstop>lineEditTimeStep</tabstop>
-  <tabstop>lineEditConvWeight</tabstop>
-  <tabstop>spinBoxFlowModel</tabstop>
-  <tabstop>spinBoxIntType</tabstop>
   <tabstop>checkBoxCalcCf</tabstop>
-  <tabstop>lineEditC12</tabstop>
  </tabstops>
  <resources/>
  <connections>
-  <connection>
-   <sender>checkBoxCalcCf</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>lineEditC12</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>246</x>
-     <y>326</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>246</x>
-     <y>350</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>buttonBox</sender>
    <signal>clicked(QAbstractButton*)</signal>
