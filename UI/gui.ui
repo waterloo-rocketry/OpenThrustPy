@@ -57,6 +57,9 @@ p, li { white-space: pre-wrap; }
          <layout class="QHBoxLayout" name="horizontalLayoutSettings">
           <item>
            <widget class="QPushButton" name="loadDatabasesButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
              <string>Load Datbases</string>
             </property>
@@ -178,6 +181,9 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionLoad_Databases">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Load Databases</string>
    </property>

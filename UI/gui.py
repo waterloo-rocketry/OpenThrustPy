@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'UI/GUI.ui'
+# Form implementation generated from reading ui file 'gui.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -35,6 +35,7 @@ class Ui_MainWindow(object):
         self.horizontalLayoutSettings = QtWidgets.QHBoxLayout()
         self.horizontalLayoutSettings.setObjectName("horizontalLayoutSettings")
         self.loadDatabasesButton = QtWidgets.QPushButton(self.centralwidget)
+        self.loadDatabasesButton.setEnabled(False)
         self.loadDatabasesButton.setObjectName("loadDatabasesButton")
         self.horizontalLayoutSettings.addWidget(self.loadDatabasesButton)
         self.setVariablesButton = QtWidgets.QPushButton(self.centralwidget)
@@ -90,6 +91,7 @@ class Ui_MainWindow(object):
         self.actionSave_Settings = QtWidgets.QAction(MainWindow)
         self.actionSave_Settings.setObjectName("actionSave_Settings")
         self.actionLoad_Databases = QtWidgets.QAction(MainWindow)
+        self.actionLoad_Databases.setEnabled(False)
         self.actionLoad_Databases.setObjectName("actionLoad_Databases")
         self.actionSet_Variables = QtWidgets.QAction(MainWindow)
         self.actionSet_Variables.setObjectName("actionSet_Variables")

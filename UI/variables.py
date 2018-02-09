@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'UI/variables.ui'
+# Form implementation generated from reading ui file 'variables.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -72,6 +72,7 @@ class Ui_VariablesWindow(object):
         self.labelRampUp.setObjectName("labelRampUp")
         self.formLayout.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.labelRampUp)
         self.SpinBoxRampUp = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.SpinBoxRampUp.setEnabled(False)
         self.SpinBoxRampUp.setButtonSymbols(QtWidgets.QAbstractSpinBox.UpDownArrows)
         self.SpinBoxRampUp.setCorrectionMode(QtWidgets.QAbstractSpinBox.CorrectToNearestValue)
         self.SpinBoxRampUp.setDecimals(1)
@@ -82,6 +83,7 @@ class Ui_VariablesWindow(object):
         self.labelRampDown.setObjectName("labelRampDown")
         self.formLayout.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.labelRampDown)
         self.SpinBoxRampDown = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.SpinBoxRampDown.setEnabled(False)
         self.SpinBoxRampDown.setButtonSymbols(QtWidgets.QAbstractSpinBox.UpDownArrows)
         self.SpinBoxRampDown.setCorrectionMode(QtWidgets.QAbstractSpinBox.CorrectToNearestValue)
         self.SpinBoxRampDown.setDecimals(1)
@@ -103,6 +105,7 @@ class Ui_VariablesWindow(object):
         self.labelConvWeight.setObjectName("labelConvWeight")
         self.formLayout.setWidget(9, QtWidgets.QFormLayout.LabelRole, self.labelConvWeight)
         self.SpinBoxConverge = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.SpinBoxConverge.setEnabled(False)
         self.SpinBoxConverge.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
         self.SpinBoxConverge.setCorrectionMode(QtWidgets.QAbstractSpinBox.CorrectToNearestValue)
         self.SpinBoxConverge.setDecimals(3)
@@ -113,6 +116,7 @@ class Ui_VariablesWindow(object):
         self.labelVaporization.setObjectName("labelVaporization")
         self.formLayout.setWidget(10, QtWidgets.QFormLayout.LabelRole, self.labelVaporization)
         self.SpinBoxVaporFactor = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.SpinBoxVaporFactor.setEnabled(False)
         self.SpinBoxVaporFactor.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
         self.SpinBoxVaporFactor.setCorrectionMode(QtWidgets.QAbstractSpinBox.CorrectToNearestValue)
         self.SpinBoxVaporFactor.setDecimals(3)
@@ -123,6 +127,7 @@ class Ui_VariablesWindow(object):
         self.labelFlowModel.setObjectName("labelFlowModel")
         self.formLayout.setWidget(11, QtWidgets.QFormLayout.LabelRole, self.labelFlowModel)
         self.checkBoxFlowModel = QtWidgets.QCheckBox(self.centralwidget)
+        self.checkBoxFlowModel.setEnabled(False)
         self.checkBoxFlowModel.setText("")
         self.checkBoxFlowModel.setChecked(False)
         self.checkBoxFlowModel.setObjectName("checkBoxFlowModel")
@@ -131,6 +136,7 @@ class Ui_VariablesWindow(object):
         self.labelIntType.setObjectName("labelIntType")
         self.formLayout.setWidget(12, QtWidgets.QFormLayout.LabelRole, self.labelIntType)
         self.checkBoxIntType = QtWidgets.QCheckBox(self.centralwidget)
+        self.checkBoxIntType.setEnabled(False)
         self.checkBoxIntType.setText("")
         self.checkBoxIntType.setChecked(False)
         self.checkBoxIntType.setTristate(False)
@@ -140,6 +146,7 @@ class Ui_VariablesWindow(object):
         self.labelCalcCf.setObjectName("labelCalcCf")
         self.formLayout.setWidget(13, QtWidgets.QFormLayout.LabelRole, self.labelCalcCf)
         self.checkBoxCalcCf = QtWidgets.QCheckBox(self.centralwidget)
+        self.checkBoxCalcCf.setEnabled(False)
         self.checkBoxCalcCf.setText("")
         self.checkBoxCalcCf.setObjectName("checkBoxCalcCf")
         self.formLayout.setWidget(13, QtWidgets.QFormLayout.FieldRole, self.checkBoxCalcCf)
@@ -147,6 +154,7 @@ class Ui_VariablesWindow(object):
         self.labelC12.setObjectName("labelC12")
         self.formLayout.setWidget(14, QtWidgets.QFormLayout.LabelRole, self.labelC12)
         self.SpinBoxC12 = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.SpinBoxC12.setEnabled(False)
         self.SpinBoxC12.setReadOnly(False)
         self.SpinBoxC12.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
         self.SpinBoxC12.setCorrectionMode(QtWidgets.QAbstractSpinBox.CorrectToNearestValue)
