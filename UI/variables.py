@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'variables.ui'
+# Form implementation generated from reading ui file 'UI/variables.ui'
 #
-# Created by: PyQt5 UI code generator 5.10
+# Created by: PyQt5 UI code generator 5.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -154,7 +154,7 @@ class Ui_VariablesWindow(object):
         self.SpinBoxC12.setObjectName("SpinBoxC12")
         self.formLayout.setWidget(14, QtWidgets.QFormLayout.FieldRole, self.SpinBoxC12)
         self.buttonBox = QtWidgets.QDialogButtonBox(self.centralwidget)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Save)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Save)
         self.buttonBox.setCenterButtons(False)
         self.buttonBox.setObjectName("buttonBox")
         self.formLayout.setWidget(16, QtWidgets.QFormLayout.FieldRole, self.buttonBox)

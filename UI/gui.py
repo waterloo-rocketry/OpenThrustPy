@@ -28,6 +28,7 @@ class Ui_MainWindow(object):
         self.verticalLayoutVariablesConsole = QtWidgets.QVBoxLayout()
         self.verticalLayoutVariablesConsole.setObjectName("verticalLayoutVariablesConsole")
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
+        self.textBrowser.setEnabled(True)
         self.textBrowser.setMaximumSize(QtCore.QSize(16777215, 1677215))
         self.textBrowser.setObjectName("textBrowser")
         self.verticalLayoutVariablesConsole.addWidget(self.textBrowser)
@@ -39,9 +40,9 @@ class Ui_MainWindow(object):
         self.setVariablesButton = QtWidgets.QPushButton(self.centralwidget)
         self.setVariablesButton.setObjectName("setVariablesButton")
         self.horizontalLayoutSettings.addWidget(self.setVariablesButton)
-        self.setSimulationButton = QtWidgets.QPushButton(self.centralwidget)
-        self.setSimulationButton.setObjectName("setSimulationButton")
-        self.horizontalLayoutSettings.addWidget(self.setSimulationButton)
+        self.simSettingsButton = QtWidgets.QPushButton(self.centralwidget)
+        self.simSettingsButton.setObjectName("simSettingsButton")
+        self.horizontalLayoutSettings.addWidget(self.simSettingsButton)
         self.verticalLayoutVariablesConsole.addLayout(self.horizontalLayoutSettings)
         self.mainVerticalLayout.addLayout(self.verticalLayoutVariablesConsole)
         self.horizontalLayoutGraphics = QtWidgets.QHBoxLayout()
@@ -105,9 +106,14 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "OpenThrust"))
+        self.textBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.loadDatabasesButton.setText(_translate("MainWindow", "Load Datbases"))
         self.setVariablesButton.setText(_translate("MainWindow", "Set Variables"))
-        self.setSimulationButton.setText(_translate("MainWindow", "Set Simulation Settings"))
+        self.simSettingsButton.setText(_translate("MainWindow", "Simulation Settings"))
         self.cancelButton.setText(_translate("MainWindow", "Cancel"))
         self.resetButton.setText(_translate("MainWindow", "Reset"))
         self.startButton.setText(_translate("MainWindow", "Start"))

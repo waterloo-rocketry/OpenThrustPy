@@ -22,6 +22,7 @@ class BaseModel:
         # Sets state of model
         self.cancel = False
         self.running = False
+        self.inGui = False
         
         # Sets initial model values
         self.m = self.initMass
@@ -135,6 +136,7 @@ class BaseModel:
                self.app.processEvents()
                prog = (1-((self.maxTime-self.t)/self.maxTime))*100           
                self.progressBar.setValue(prog)
+       self.progressBar.setValue(100)
        return True 
    
     def outputFile(self):
