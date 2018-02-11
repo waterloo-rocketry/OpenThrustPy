@@ -18,9 +18,15 @@ class SolomonModel(BaseModel):
         BaseModel.__init__(self, mass, temperature, 
                            maxTime, minMass, maxIterations)
         
-        self.rho1 = self.m/self.V
-        self.initialState()
-        
+        try:
+            self.rho1 = self.m/self.V
+            self.initialState()
+        except ValueError:
+            self.outputText(
+                    """Value error encountered when initializing state.
+                    \nPlease check temperature, mass, and volume input"""
+                    )
+            return False
         self.tArray, self.MArray, self.T1Array = [], [], []
         self.mdotArray, self.thrustArray = [], []
         self.rho1Array, self.PcArray = [], []
@@ -39,9 +45,16 @@ class SolomonModel(BaseModel):
     def reset(self):
         BaseModel.reset(self)
         
-        self.rho1 = self.m/self.V
+        try:
+            self.rho1 = self.m/self.V
+            self.initialState()
+        except ValueError:
+            self.outputText(
+"""Value error encountered when initializing state. 
+Please check temperature, mass, and volume input.\n""")
+            return False
         
-        self.initialState()
+
         
         self.tArray, self.MArray, self.T1Array = [], [], []
         self.mdotArray, self.thrustArray = [], []
@@ -52,11 +65,10 @@ class SolomonModel(BaseModel):
         if self.inGui:
             self.progressBar.setValue(0)
             self.guiPlot.update_figure()
-
     
     def initialState(self):
-        
         Props1 = grabProps(self.T1, self.rho1) 
+        
         self.P1 = Props1["P"]
         self.rhoL = Props1["rho_L"]
         self.rhoV = Props1["rho_V"]
@@ -83,30 +95,41 @@ class SolomonModel(BaseModel):
     def model(self):
         # Match fluid properties
         guess = [300,300]
-        pFunc = lambda v: [grabProps(v[0],v[1])["P"] - self.P1,
-                           grabProps(v[0],v[1])["X"] - self.X1]
-        v1 = optimize.least_squares(pFunc, guess, bounds=(0,np.inf))
-        self.T1      = v1.x[0]
-        self.rho1    = v1.x[1]
-        Props1       = grabProps(self.T1, self.rho1)
-        self.Pv1     = Props1["P"]
-        self.rhoL1   = Props1["rho_L"]
-        self.h1      = Props1["h"]
-        self.H1      = self.h1*self.m
-        self.s1      = Props1["s"]
+        try:
+            pFunc = lambda v: [grabProps(v[0],v[1])["P"] - self.P1,
+                               grabProps(v[0],v[1])["X"] - self.X1]
+            v1 = optimize.least_squares(pFunc, guess, bounds=(0,np.inf))
+            self.T1      = v1.x[0]
+            self.rho1    = v1.x[1]
+            Props1       = grabProps(self.T1, self.rho1)
+            self.Pv1     = Props1["P"]
+            self.rhoL1   = Props1["rho_L"]
+            self.h1      = Props1["h"]
+            self.H1      = self.h1*self.m
+            self.s1      = Props1["s"]
+        except ValueError:
+            self.outputText("Value error encountered in model, cancelling...")
+            self.cancel = True
+            return
         
-        # Isentropic assumption
-        pFunc = lambda v: [grabProps(v[0],v[1])["P"] - self.P1,
-                           grabProps(v[0],v[1])["s"] - self.s1]
-        #Adiabatic assumption
-        #pFunc = lambda v: [grabProps(v[0],v[1])["P"] - P1,
-        #                   grabProps(v[0],v[1])["h"] - h1]
-        v2 = optimize.least_squares(pFunc, guess, bounds=(0,np.inf))
-        self.T2      = v2.x[0]
-        self.rho2    = v2.x[0]
-        Props2  = grabProps(self.T2,self.rho2)
-        self.Pv2     = Props2["P"]
-        self.h2      = Props2["h"]
+        
+        try:
+            # Isentropic assumption
+            pFunc = lambda v: [grabProps(v[0],v[1])["P"] - self.P1,
+                               grabProps(v[0],v[1])["s"] - self.s1]
+            #Adiabatic assumption
+            #pFunc = lambda v: [grabProps(v[0],v[1])["P"] - P1,
+            #                   grabProps(v[0],v[1])["h"] - h1]
+            v2 = optimize.least_squares(pFunc, guess, bounds=(0,np.inf))
+            self.T2      = v2.x[0]
+            self.rho2    = v2.x[0]
+            Props2  = grabProps(self.T2,self.rho2)
+            self.Pv2     = Props2["P"]
+            self.h2      = Props2["h"]
+        except ValueError:
+            self.outputText("Value error encountered in model, cancelling...")
+            self.cancel = True
+            return
         
         # Mass Flow calculations
         k = ((self.P1-self.P2)/(self.Pv1-self.P2))**0.5
@@ -119,26 +142,21 @@ class SolomonModel(BaseModel):
                 )
         if isnan(self.mdot_HEM): self.mdot_HEM = 0
         self.mdot = self.Cd*((1-W)*self.mdot_inc+W*self.mdot_HEM)
-    # =========================================================================
-    #     Temporary
-    # =========================================================================
+
+        # Injector flow to thrust
         mdotNozzle = self.mdot*((1+self.OF)/self.OF)
         rpaPoint = grabRpaPoint(self.OF, self.Pc)
         k = rpaPoint["k"]
         Tc = rpaPoint["Tc"]
         R = rpaPoint["R"]
-        nozThroatArea = 0.000382646
         a = (k*R*Tc)**0.5
         b = (k+1)/(k-1)
         c = (2/(k+1))
-        self.Pc = (mdotNozzle*a)/(k*nozThroatArea*((c**b)**0.5))
+        self.Pc = (mdotNozzle*a)/(k*self.nozThroatArea*((c**b)**0.5))
         Cf = rpaPoint["Cf opt"]
-        self.thrust = self.Pc*Cf*nozThroatArea
+        self.thrust = self.Pc*Cf*self.nozThroatArea
         self.Pc = self.Pc/6894.76
     
-    # =========================================================================
-    #     End
-    # =========================================================================
         # Update properties
         self.m -= self.mdot*self.dt
         self.Hdot = self.h1*self.mdot
@@ -148,13 +166,19 @@ class SolomonModel(BaseModel):
         self.h1 = self.H1/self.m
         
         # Calculate new temperature
-        pFunc = lambda T_unknown: grabProps(T_unknown, self.rho1)["h"] -self.h1
-        Temp1 = optimize.least_squares(pFunc, 300 , bounds=(0,np.inf))
-        self.T1 = Temp1.x[0]
-        Props1 = grabProps(self.T1, self.rho1)
-        self.P1 = Props1["P"]
-        self.X1 = Props1["X"]
-    
+        try:
+            pFunc = lambda T_unknown: grabProps(T_unknown, self.rho1)["h"] -self.h1
+            Temp1 = optimize.least_squares(pFunc, 300 , bounds=(0,np.inf))
+            self.T1 = Temp1.x[0]
+            Props1 = grabProps(self.T1, self.rho1)
+            self.P1 = Props1["P"]
+            self.X1 = Props1["X"]
+        except ValueError:
+            self.outputText("Value error encountered in model, cancelling...")
+            self.cancel = True
+            return
+        
+        
     def timeStep(self):
         self.iterations += 1
         

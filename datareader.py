@@ -28,7 +28,7 @@ def buildNistSplines():
     s_V_NIST     = columnToFloats(readColumn(18)[1:])
     
     # Build splines for interpolating NIST database by temperature
-    interpT = lambda Y: interp1d(T_NIST,Y,kind = "cubic", bounds_error = True)
+    interpT = lambda Y: interp1d(T_NIST,Y,kind = "cubic", bounds_error = False)
     NIST_SPLINES_T["P"]     = interpT(P_NIST)
     NIST_SPLINES_T["rho_L"] = interpT(rho_L_NIST)
     NIST_SPLINES_T["rho_V"] = interpT(rho_V_NIST)
@@ -38,7 +38,7 @@ def buildNistSplines():
     NIST_SPLINES_T["s_V"]   = interpT(s_V_NIST)
     
     # Build splines for interpolating NIST database by pressure
-    interpP = lambda Y: interp1d(P_NIST,Y,kind = "cubic", bounds_error = True)
+    interpP = lambda Y: interp1d(P_NIST,Y,kind = "cubic", bounds_error = False)
     NIST_SPLINES_P["T"]     = interpP(T_NIST)
     NIST_SPLINES_P["rho_L"] = interpP(rho_L_NIST)
     NIST_SPLINES_P["rho_V"] = interpP(rho_V_NIST)

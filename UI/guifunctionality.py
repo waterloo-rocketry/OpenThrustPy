@@ -111,7 +111,7 @@ def settingsGrab(window):
 def settingsSet(window, cfg):
     # Sets the settings data in the variables window based off of cfg
     window.SpinBoxOxTank.setValue           (float(cfg['ox_tank_vol_L']))
-    window.SpinBoxThroatA.setValue         (float(cfg['noz_thr_area_cm2']))
+    window.SpinBoxThroatA.setValue          (float(cfg['noz_thr_area_cm2']))
     window.SpinBoxExitA.setValue            (float(cfg['noz_ext_area_cm2']))
     window.SpinBoxOxFuel.setValue           (float(cfg['ox_fuel_ratio']))
     window.SpinBoxRampUp.setValue           (float(cfg['ramp_up_s']))
@@ -120,9 +120,9 @@ def settingsSet(window, cfg):
     window.SpinBoxConverge.setValue         (float(cfg['conv_weight']))
     window.checkBoxFlowModel.setCheckState  (int(cfg['flow_model']))
     window.checkBoxIntType.setCheckState    (int(cfg['integ_type']))
-    window.checkBoxCalcCf.setCheckState    (int(cfg['calc_thrust_coef']))
+    window.checkBoxCalcCf.setCheckState     (int(cfg['calc_thrust_coef']))
     window.SpinBoxC12.setValue              (float(cfg['C12']))
-    window.SpinBoxInjA.setValue          (float(cfg['inj_area_cm2']))
+    window.SpinBoxInjA.setValue             (float(cfg['inj_area_cm2']))
     window.SpinBoxVaporFactor.setValue      (float(cfg['vapor_factor']))
     
 def settingsSave(Parser, settingsPath, window):
@@ -168,16 +168,15 @@ def printToGui(text, textBrowser):
 # Button Functions
 # =============================================================================
 
-
+# Main window
 def setVariablesButtonClicked(WindowWidget, WindowUI):
     showWindow(WindowWidget)
-    grabSetSettings(WindowUI)
-    
-def variablesWindowSaveButtonClicked(WindowUI):
-    Parser = cfgreader.configparser.ConfigParser()
-    settingsSave(Parser, cfgreader.SETTINGS_PATH, WindowUI)
+    grabSetSettings(WindowUI)    
 
 def loadDatabasesButtonClicked(WindowWidget,WindowUI):
+    showWindow(WindowWidget)
+
+def simSettingsButtonClicked(WindowWidget, WindowUI):
     showWindow(WindowWidget)
 
 def startButtonClicked(WindowWidget, WindowUI, ModelInstance):
@@ -201,4 +200,20 @@ def resetButtonClicked(WindowWidget, WindowUI, ModelInstance):
     WindowUI.resetButton.setDisabled(True)
     WindowUI.startButton.setEnabled(True)
     WindowUI.cancelButton.setDisabled(True)
+
+# Variables window
+def variablesWindowSaveButtonClicked(WindowUI):
+    Parser = cfgreader.configparser.ConfigParser()
+    settingsSave(Parser, cfgreader.SETTINGS_PATH, WindowUI)
     
+# Sim settings window
+def simSettingsSaveButtonClicked(WindowWidget, WindowUI, ModelInstance):
+    mass = float(WindowUI.spinBoxOxMass.value())
+    if mass == 0: mass = 0.0001
+    temp = float(WindowUI.spinBoxTankTemp.value()) + 273.15
+    maxTime = 15
+    minMass = 0
+    maxIter = 0
+    ModelInstance.reInitModelInst(mass, temp, maxTime, minMass, maxIter)
+    ModelInstance.reset()
+    WindowWidget.close()

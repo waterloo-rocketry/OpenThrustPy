@@ -4,6 +4,7 @@ import UI.guifunctionality as gf
 import UI.gui as gui
 import UI.variables as variables
 import UI.databases as databases
+import UI.simsettings as simsettings
 import Models.solomonmodel as solomonmodel
 
 VERSION = 0.1
@@ -16,6 +17,7 @@ preamble+= " About in the menu bar."
 
 
 def buttonsConnect():
+    # Toolbar Buttons
     MWindow.actionSet_Variables.triggered.connect(
             lambda: gf.setVariablesButtonClicked(VariablesWindow, VarWindow)
             )
@@ -29,6 +31,7 @@ def buttonsConnect():
             lambda: gf.openTeamSite()
             )
     
+    # Main window buttons
     MWindow.setVariablesButton.clicked.connect(
             lambda: gf.setVariablesButtonClicked(VariablesWindow,VarWindow)
             )
@@ -44,11 +47,20 @@ def buttonsConnect():
     MWindow.resetButton.clicked.connect(
             lambda: gf.resetButtonClicked(MainWindow, MWindow, ModelInstance)
             )
-    
-    VarWindow.buttonBox.clicked.connect(
-            lambda: gf.variablesWindowSaveButtonClicked(VarWindow)
+    MWindow.simSettingsButton.clicked.connect(
+            lambda: gf.simSettingsButtonClicked(SimSettingWindow, SsWindow)
             )
     
+    # Variables window buttons
+    VarWindow.buttonBox.accepted.connect(
+            lambda: gf.variablesWindowSaveButtonClicked(VarWindow)
+            )
+    VarWindow.buttonBox.rejected.connect(lambda: VariablesWindow.close())
+
+    # Simulation settings window buttons
+    SsWindow.buttonBox.accepted.connect(
+            lambda: gf.simSettingsSaveButtonClicked(SimSettingWindow, SsWindow, ModelInstance)
+            )
 
 
 if __name__ == "__main__":
@@ -58,14 +70,21 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     MWindow = gui.Ui_MainWindow()
     MWindow.setupUi(MainWindow)
+    
     VariablesWindow = QtWidgets.QMainWindow()
     VarWindow = variables.Ui_VariablesWindow()
     VarWindow.setupUi(VariablesWindow)
+    
     DatabasesWindow = QtWidgets.QMainWindow()
     DbWindow = databases.Ui_DatabasesWindow()
     DbWindow.setupUi(DatabasesWindow)
     
-    ModelInstance = solomonmodel.SolomonModel(4.6,273,15)
+    SimSettingWindow = QtWidgets.QMainWindow()
+    SsWindow = simsettings.Ui_MainWindow()
+    SsWindow.setupUi(SimSettingWindow)
+
+    
+    ModelInstance = solomonmodel.SolomonModel(1,273,15)
     
     # Adding the plotter to the GUI
     plotter = QtWidgets.QVBoxLayout(MWindow.widget)
@@ -75,6 +94,7 @@ if __name__ == "__main__":
     plotter.addWidget(dc)
     ModelInstance.addGui(app, dc, MWindow.progressBar, MWindow.textBrowser)
 
+    
     # Connecting buttons
     buttonsConnect()
     
