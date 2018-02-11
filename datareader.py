@@ -1,8 +1,11 @@
 import csv
 from scipy.interpolate import interp1d, interp2d
 import warnings
+import numpy as np
+import pandas
 NIST_FILE_PATH = "N2O_100_1000PSI.txt"
 RPA_FILE_PATH  = "RPA_Output_Table.csv"
+STF_FILE_PATH  = "STF_Data.csv"
 NIST_SPLINES_T = {}
 NIST_SPLINES_P = {}
 RPA_SPLINES    = {}
@@ -180,3 +183,9 @@ def grabRpaPoint(OF, Pc):
 warnings.simplefilter("ignore")
 buildNistSplines()
 buildRpaSplines()
+class STF:
+    #def __init__(self, *args, **kwargs):
+    def grabData(self):
+        colnames = ['Time', 'P_CC', 'OxyMass','Thrust','P_Tank']
+        data = pandas.read_csv(STF_FILE_PATH, header=1, names=colnames)
+        return data

@@ -6,6 +6,7 @@ matplotlib.use('Qt5Agg')
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from PyQt5 import QtWidgets
+from datareader import STF
 
 import cfgreader
 
@@ -33,36 +34,52 @@ class DynamicMplCanvas(MplCanvas):
     
     def __init__(self, ModelInstance, *args, **kwargs):
         self.ModelInstance = ModelInstance
+        self.graph = "Thrust"
         MplCanvas.__init__(self, *args, **kwargs)
-        self.graph = "thrust"
+        
         
     def setGraph(self, graph):
-        self.graph = graph.lower()
+        self.graph = graph
 
     def compute_initial_figure(self):
-        self.line, =self.axes.plot([], [],color='red',label='thrust')
+        self.modelLine, =self.axes.plot([], [],color='red',label='Simulated '+self.graph)
+        self.plotSTF()
+        self.axes.set_title(self.graph+" Versus Time")
         self.axes.set_xlim(0, 20)
         self.axes.set_ylim(0, +2000)
         self.axes.set_xlabel('Time (s)')
-        self.axes.set_ylabel('Thrust (N)')
         legend = self.axes.legend(loc='best', shadow=False, fontsize='medium')
         legend.get_frame().set_alpha(0.5)
 
     def update_figure(self):
         a = self.ModelInstance.grabArrays()
         x = a["Time Array"]
+        y= a[self.graph + " Array"]  #Just make array names consistent with the graph name
+        """
         if self.graph == "thrust":
+            self.axes.set_ylabel(self.graph)
             y = a["Thrust Array"]
         elif self.graph == "tank temperature":
-            y = a["Tank Temperature Array"]
+            self.axes.set_ylabel('Temperature (K)')
+            #y = a["Tank Temperature Array"]
         elif self.graph == "injector mass flow":
-            y = a["Injector Mass Flow Array"]
+            self.axes.set_ylabel('mDot Injector (kg/s)')
+            #y = a["Injector Mass Flow Array"]
         elif self.graph == "chamber pressure":
-            y = a["Chamber Pressure Graph"]
-        self.line.set_ydata(y)
-        self.line.set_xdata(x)
+            self.axes.set_ylabel('Chamber Pressure (psig)')
+            #y = a["Chamber Pressure Graph"]    
+            # """
+        self.modelLine.set_ydata(y)
+        self.modelLine.set_xdata(x)
         #self.axes.plot(x, y, 'r')
         self.draw()
+    
+    def plotSTF(self):
+        data=STF.grabData(self)
+        x = data["Time"].tolist()
+        y = data[self.graph].tolist()
+        self.STFLine, =self.axes.plot(x, y,color='blue',label='STF '+self.graph)
+
 
 # =============================================================================
 # GUI Functions
