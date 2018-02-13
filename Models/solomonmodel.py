@@ -74,7 +74,7 @@ Please check temperature, mass, and volume input.\n""")
         self.rhoV = Props1["rho_V"]
         self.X1 = calcQuality(self.rho1, self.rhoV, self.rhoL)
         self.h1 = Props1["h"]
-        self.H1 = self.h1*self.m;
+        self.H1 = self.h1*self.m
         self.mdot_inc = 0
         self.mdot_HEM = 0
         self.mdot = 0
@@ -180,12 +180,17 @@ Please check temperature, mass, and volume input.\n""")
         
         
     def timeStep(self):
+        self.model()
+        if not BaseModel.timeStep(self): #this allows us to eliminate the code below as redundant
+            return False 
+            """ 
         self.iterations += 1
         
         # Break Cases
         if self.cancel:
             self.outputText("Cancelled run, outputting file...")
             self.outputFile()
+            self.progressBar.setValue(0)
             self.cancel = False
             return False
         if self.m < self.minMass: 
@@ -201,11 +206,8 @@ Please check temperature, mass, and volume input.\n""")
             self.outputText("Maximum iterations reached, outputting file...")
             self.outputFile()
             return False
-        
-        self.model()
-        
-        self.t += self.dt
-        
+         self.t += self.dt
+        """
         return True
     
     def grabArrays(self):
@@ -221,5 +223,5 @@ Please check temperature, mass, and volume input.\n""")
        self.outputText("Running Solomon model with " + str(self.initMass)
                         + " kg at " + str(self.initTemperature) + " Kelvin..."
                         )
-       BaseModel.runModel(self)    
+       BaseModel.runModel(self,True)    
        return True 

@@ -97,7 +97,7 @@ class BaseModel:
     
     def timeStep(self):
         self.iterations += 1
-        
+     
         # Break Cases
         if self.cancel:
             self.outputText("Cancelled run, outputting file...")
@@ -124,17 +124,16 @@ class BaseModel:
         
         return True
         
-    def runModel(self):
-       a = True
-       while a:
+    def runModel(self,running):
+       while running: #so that we can avoid a hardcoded while(true) and make this function controllable from outside the time step.
            # Iterates once and grabs new variables to arrays
-           a = self.timeStep()
+           running=self.timeStep()
            self.updatePlot()
            # Updates GUI if one is available
            if self.inGui:
                self.guiPlot.update_figure()
                self.app.processEvents()
-               prog = (1-((self.maxTime-self.t)/self.maxTime))*100           
+               prog = (1-((self.m)/self.initMass))*100      #based on burndown of oxydizer. Not necessarily linear, but better than time-based
                self.progressBar.setValue(prog)
        self.progressBar.setValue(100)
        return True 
