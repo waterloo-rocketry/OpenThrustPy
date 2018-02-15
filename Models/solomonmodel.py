@@ -6,18 +6,18 @@ L refers to liquid phase, V refers to vapor phase
 import scipy.optimize as optimize
 from math import isnan
 import numpy as np
-from datareader import grabProps, calcQuality, grabRpaPoint
 from dataoutputtocsv import outputToDisk
 from Models.basemodel import BaseModel
 
 class SolomonModel(BaseModel):
     
     
-    def __init__(self, mass, temperature, 
-                 maxTime = 60, minMass = 0, maxIterations = 0):        
+    def __init__(self, mass, temperature, maxTime = 60, 
+                 minMass = 0, maxIterations = 0, dataBases = None):        
         BaseModel.__init__(self, mass, temperature, 
-                           maxTime, minMass, maxIterations)
-        
+                           maxTime, minMass, maxIterations, dataBases)
+        self.grabProps = lambda T, rho: self.DBs.grabProps(T, rho)
+        self.grabRpaPoint = lambda OF, Pc: self.DBs.grabRpaPoint(OF, Pc)
         try:
             self.rho1 = self.m/self.V
             self.initialState()
@@ -67,12 +67,12 @@ Please check temperature, mass, and volume input.\n""")
             self.guiPlot.update_figure()
     
     def initialState(self):
-        Props1 = grabProps(self.T1, self.rho1) 
+        Props1 = self.grabProps(self.T1, self.rho1) 
         
         self.P1 = Props1["P"]
         self.rhoL = Props1["rho_L"]
         self.rhoV = Props1["rho_V"]
-        self.X1 = calcQuality(self.rho1, self.rhoV, self.rhoL)
+        self.X1 = (self.rhoV/self.rho1)*((self.rhoL-self.rho1)/(self.rhoL-self.rhoV))
         self.h1 = Props1["h"]
         self.H1 = self.h1*self.m
         self.mdot_inc = 0
@@ -96,12 +96,12 @@ Please check temperature, mass, and volume input.\n""")
         # Match fluid properties
         guess = [300,300]
         try:
-            pFunc = lambda v: [grabProps(v[0],v[1])["P"] - self.P1,
-                               grabProps(v[0],v[1])["X"] - self.X1]
+            pFunc = lambda v: [self.grabProps(v[0],v[1])["P"] - self.P1,
+                               self.grabProps(v[0],v[1])["X"] - self.X1]
             v1 = optimize.least_squares(pFunc, guess, bounds=(0,np.inf))
             self.T1      = v1.x[0]
             self.rho1    = v1.x[1]
-            Props1       = grabProps(self.T1, self.rho1)
+            Props1       = self.grabProps(self.T1, self.rho1)
             self.Pv1     = Props1["P"]
             self.rhoL1   = Props1["rho_L"]
             self.h1      = Props1["h"]
@@ -115,15 +115,15 @@ Please check temperature, mass, and volume input.\n""")
         
         try:
             # Isentropic assumption
-            pFunc = lambda v: [grabProps(v[0],v[1])["P"] - self.P1,
-                               grabProps(v[0],v[1])["s"] - self.s1]
+            pFunc = lambda v: [self.grabProps(v[0],v[1])["P"] - self.P1,
+                               self.grabProps(v[0],v[1])["s"] - self.s1]
             #Adiabatic assumption
-            #pFunc = lambda v: [grabProps(v[0],v[1])["P"] - P1,
-            #                   grabProps(v[0],v[1])["h"] - h1]
+            #pFunc = lambda v: [self.grabProps(v[0],v[1])["P"] - P1,
+            #                   self.grabProps(v[0],v[1])["h"] - h1]
             v2 = optimize.least_squares(pFunc, guess, bounds=(0,np.inf))
             self.T2      = v2.x[0]
             self.rho2    = v2.x[0]
-            Props2  = grabProps(self.T2,self.rho2)
+            Props2  = self.grabProps(self.T2,self.rho2)
             self.Pv2     = Props2["P"]
             self.h2      = Props2["h"]
         except ValueError:
@@ -145,7 +145,7 @@ Please check temperature, mass, and volume input.\n""")
 
         # Injector flow to thrust
         mdotNozzle = self.mdot*((1+self.OF)/self.OF)
-        rpaPoint = grabRpaPoint(self.OF, self.Pc)
+        rpaPoint = self.grabRpaPoint(self.OF, self.Pc)
         k = rpaPoint["k"]
         Tc = rpaPoint["Tc"]
         R = rpaPoint["R"]
@@ -167,10 +167,10 @@ Please check temperature, mass, and volume input.\n""")
         
         # Calculate new temperature
         try:
-            pFunc = lambda T_unknown: grabProps(T_unknown, self.rho1)["h"] -self.h1
+            pFunc = lambda T_unknown: self.grabProps(T_unknown, self.rho1)["h"] -self.h1
             Temp1 = optimize.least_squares(pFunc, 300 , bounds=(0,np.inf))
             self.T1 = Temp1.x[0]
-            Props1 = grabProps(self.T1, self.rho1)
+            Props1 = self.grabProps(self.T1, self.rho1)
             self.P1 = Props1["P"]
             self.X1 = Props1["X"]
         except ValueError:

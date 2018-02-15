@@ -4,12 +4,13 @@ from dataoutputtocsv import outputToDisk
 
 class BaseModel:
     
-    def __init__(self, mass, temperature, 
-                 maxTime = 60, minMass = 0, maxIterations = 0):
+    def __init__(self, mass, temperature, maxTime = 60, 
+                 minMass = 0, maxIterations = 0, dataBases = None):
         """
             Input in kg and K
         """
         # Stores initiated values
+        self.DBs = dataBases
         self.initMass = mass
         self.initTemperature = temperature
         self.maxTime = maxTime

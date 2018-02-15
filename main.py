@@ -5,6 +5,7 @@ import UI.gui as gui
 import UI.variables as variables
 import UI.databases as databases
 import UI.simsettings as simsettings
+import databaseclass as db
 import Models.solomonmodel as solomonmodel
 
 VERSION = 0.1
@@ -61,10 +62,20 @@ def buttonsConnect():
     SsWindow.buttonBox.accepted.connect(
             lambda: gf.simSettingsSaveButtonClicked(SimSettingWindow, SsWindow, ModelInstance)
             )
+    
+    # Databases window buttons
+ #   DbWindow.buttonBox.accepted.connect(
+ #           lambda: gf.dataBasesSaveButtonClicked()
+ #           )
 
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
+    
+    # Set initial databases
+    dataBases = db.DataBases()
+    dataBases.setPathNIST("N2O_100_1000PSI.txt")
+    dataBases.setPathRPA("RPA_Output_Table.csv")
 
     # Initial set up of GUI windows
     MainWindow = QtWidgets.QMainWindow()
@@ -84,7 +95,7 @@ if __name__ == "__main__":
     SsWindow.setupUi(SimSettingWindow)
 
     
-    ModelInstance = solomonmodel.SolomonModel(1,273,15)
+    ModelInstance = solomonmodel.SolomonModel(1,273,15, 0, 0, dataBases)
     
     # Adding the plotter to the GUI
     plotter = QtWidgets.QVBoxLayout(MWindow.widget)
