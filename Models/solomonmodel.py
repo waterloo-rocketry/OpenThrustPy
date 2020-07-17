@@ -8,6 +8,7 @@ from math import isnan
 import numpy as np
 from dataoutputtocsv import outputToDisk
 from Models.basemodel import BaseModel
+from Models.injectorModel import dyerModel
 
 class SolomonModel(BaseModel):
     
@@ -30,7 +31,8 @@ class SolomonModel(BaseModel):
         self.tArray, self.MArray, self.T1Array = [], [], []
         self.mdotArray, self.thrustArray = [], []
         self.rho1Array, self.PcArray = [], []
-        self.Cd=0.8
+        self.Cd=0.8 #Drag coefficient for injector model
+        self.injector = dyerModel(self,self.Ac,self.Cd) #Create new instance of injector model
         
         self.updatePlot()
     
@@ -75,8 +77,6 @@ Please check temperature, mass, and volume input.\n""")
         self.X1 = (self.rhoV/self.rho1)*((self.rhoL-self.rho1)/(self.rhoL-self.rhoV))
         self.h1 = Props1["h"]
         self.H1 = self.h1*self.m
-        self.mdot_inc = 0
-        self.mdot_HEM = 0
         self.mdot = 0
         self.st = Props1["state"]
         self.P2 = 14.7
@@ -115,6 +115,7 @@ Please check temperature, mass, and volume input.\n""")
         
         try:
             # Isentropic assumption
+            # grabProps checks table for properties of NOs for given temperature/pressure
             pFunc = lambda v: [self.grabProps(v[0],v[1])["P"] - self.P1,
                                self.grabProps(v[0],v[1])["s"] - self.s1]
             #Adiabatic assumption
@@ -131,17 +132,8 @@ Please check temperature, mass, and volume input.\n""")
             self.cancel = True
             return
         
-        # Mass Flow calculations
-        k = ((self.P1-self.P2)/(self.Pv1-self.P2))**0.5
-        W = (1/(k+1))
-        self.mdot_inc = self.Cd*self.Ac*(
-                (2*self.rho1*((self.P1-self.P2)*6894.76))**0.5
-                )
-        self.mdot_HEM = self.Cd*self.rho2*self.Ac*(
-                (2*((self.h1-self.h2)))**0.5
-                )
-        if isnan(self.mdot_HEM): self.mdot_HEM = 0
-        self.mdot = self.Cd*((1-W)*self.mdot_inc+W*self.mdot_HEM)
+        # Find mass flow rate by modelling injector
+        self.mdot = self.injector.getMassFlowRate()
 
         # Injector flow to thrust
         mdotNozzle = self.mdot*((1+self.OF)/self.OF)
@@ -179,7 +171,7 @@ Please check temperature, mass, and volume input.\n""")
             return
         
         
-    def timeStep(self):
+    def timeStep(self): #Call to run one iteration of model
         self.model()
         if not BaseModel.timeStep(self): #this allows us to eliminate the code below as redundant
             return False 
